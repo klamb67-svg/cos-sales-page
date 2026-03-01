@@ -513,6 +513,7 @@ async function init() {
     if (event === 'SIGNED_IN' && session) {
       showDashboard(session.user.email);
       const owned = await getUserAccess();
+      console.log('owned sections:', owned);
       renderDashboard(owned);
     } else if (event === 'SIGNED_OUT') {
       showLogin();
@@ -524,6 +525,7 @@ async function init() {
   if (session) {
     showDashboard(session.user.email);
     const owned = await getUserAccess();
+    console.log('owned sections:', owned);
     renderDashboard(owned);
   } else {
     showLogin();
