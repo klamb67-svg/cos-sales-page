@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Member Portal — The Contractor Operating System</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --navy: #1B2A4A;
+    --navy-deep: #0D1B30;
+    --navy-mid: #243558;
+    --gold: #C8922A;
+    --gold-light: #E0A83A;
+    --white: #FFFFFF;
+    --off-white: #F8F6F0;
+    --light: #F4F6F9;
+    --mid: #E2E8F0;
+    --text: #2D3748;
+    --muted: #718096;
+    --green: #2D9D5C;
+    --red: #C53030;
+    --serif: 'Playfair Display', Georgia, serif;
+    --sans: 'Inter', system-ui, sans-serif;
+  }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: var(--sans); font-size: 16px; line-height: 1.65;
+    color: var(--text); background: var(--navy-deep);
+    min-height: 100vh; overflow-x: hidden;
+  }
+
+  /* ── Nav ────────────────────────────────────────────────── */
+  .portal-nav {
+    background: rgba(13,27,48,0.97); backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(200,146,42,0.2);
+    padding: 0 24px; height: 64px;
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .nav-brand { display: flex; flex-direction: column; gap: 1px; }
+  .nav-brand-main { font-family: var(--serif); font-size: 1.05rem; font-weight: 700; color: var(--white); }
+  .nav-brand-sub { font-size: 0.62rem; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--gold); }
+  .nav-right { display: flex; align-items: center; gap: 16px; }
+  .nav-email { font-size: 0.8rem; color: rgba(255,255,255,0.5); }
+  .btn-logout {
+    background: transparent; border: 1px solid rgba(255,255,255,0.2);
+    color: rgba(255,255,255,0.6); font-size: 0.78rem; font-weight: 600;
+    padding: 6px 14px; border-radius: 4px; cursor: pointer;
+    transition: all 0.2s; font-family: var(--sans);
+  }
+  .btn-logout:hover { border-color: var(--gold); color: var(--gold); }
+
+  /* ── Grid background ───────────────────────────────────── */
+  .grid-bg {
+    position: fixed; inset: 0; z-index: 0;
+    background-image: linear-gradient(rgba(200,146,42,0.04) 1px, transparent 1px),
+                      linear-gradient(90deg, rgba(200,146,42,0.04) 1px, transparent 1px);
+    background-size: 44px 44px; pointer-events: none;
+  }
+
+  /* ── Container ─────────────────────────────────────────── */
+  .portal-container {
+    position: relative; z-index: 1;
+    max-width: 900px; margin: 0 auto; padding: 48px 24px 80px;
+  }
+
+  /* ── Login Screen ──────────────────────────────────────── */
+  .login-screen {
+    display: flex; align-items: center; justify-content: center;
+    min-height: calc(100vh - 64px);
+  }
+  .login-card {
+    background: var(--white); border-radius: 16px;
+    padding: 48px 40px; width: 100%; max-width: 420px;
+    box-shadow: 0 24px 80px rgba(0,0,0,0.4);
+    text-align: center;
+  }
+  .login-logo { margin-bottom: 8px; }
+  .login-logo h2 { font-family: var(--serif); font-size: 1.5rem; color: var(--navy); }
+  .login-logo p { font-size: 0.7rem; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--gold); margin-top: 2px; }
+  .login-divider { width: 48px; height: 3px; background: var(--gold); margin: 20px auto; }
+  .login-title { font-size: 1rem; font-weight: 600; color: var(--navy); margin-bottom: 4px; }
+  .login-subtitle { font-size: 0.85rem; color: var(--muted); margin-bottom: 28px; }
+  .login-input {
+    width: 100%; padding: 14px 16px; border: 1.5px solid var(--mid);
+    border-radius: 8px; font-family: var(--sans); font-size: 0.95rem;
+    color: var(--text); outline: none; transition: border-color 0.2s;
+    margin-bottom: 16px;
+  }
+  .login-input:focus { border-color: var(--gold); }
+  .login-input::placeholder { color: var(--muted); }
+  .btn-login {
+    width: 100%; padding: 14px; background: var(--gold);
+    color: var(--navy-deep); font-family: var(--sans); font-size: 0.95rem;
+    font-weight: 700; border: none; border-radius: 8px; cursor: pointer;
+    transition: all 0.2s; letter-spacing: 0.02em;
+  }
+  .btn-login:hover { background: var(--gold-light); transform: translateY(-1px); }
+  .btn-login:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+  .login-message {
+    margin-top: 16px; padding: 12px 16px; border-radius: 8px;
+    font-size: 0.85rem; line-height: 1.5; display: none;
+  }
+  .login-message.success { display: block; background: #F0FFF4; color: var(--green); border: 1px solid #C6F6D5; }
+  .login-message.error { display: block; background: #FFF5F5; color: var(--red); border: 1px solid #FED7D7; }
+  .login-footer { margin-top: 24px; font-size: 0.78rem; color: var(--muted); }
+  .login-footer a { color: var(--gold); text-decoration: none; }
+
+  /* ── Dashboard ─────────────────────────────────────────── */
+  .dashboard { display: none; }
+  .dashboard.active { display: block; }
+  .dash-header { margin-bottom: 40px; }
+  .dash-welcome { font-family: var(--serif); font-size: 1.8rem; color: var(--white); margin-bottom: 4px; }
+  .dash-welcome em { color: var(--gold); font-style: normal; }
+  .dash-tagline { font-size: 0.92rem; color: rgba(255,255,255,0.5); }
+
+  .dash-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(380px, 1fr)); gap: 20px; }
+
+  .dash-card {
+    background: var(--white); border-radius: 12px; overflow: hidden;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.15);
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  .dash-card:hover { transform: translateY(-3px); box-shadow: 0 12px 40px rgba(0,0,0,0.2); }
+  .dash-card-header {
+    background: var(--navy); padding: 20px 24px;
+    display: flex; justify-content: space-between; align-items: center;
+  }
+  .dash-card-section { font-size: 0.62rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--gold); margin-bottom: 4px; }
+  .dash-card-title { font-family: var(--serif); font-size: 1.1rem; color: var(--white); font-weight: 700; line-height: 1.25; }
+  .dash-card-pages { text-align: right; }
+  .dash-card-pages-num { font-family: var(--serif); font-size: 1.6rem; font-weight: 900; color: var(--gold); line-height: 1; }
+  .dash-card-pages-label { font-size: 0.55rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(255,255,255,0.4); }
+  .dash-card-body { padding: 20px 24px; }
+  .dash-card-desc { font-size: 0.85rem; color: var(--muted); margin-bottom: 16px; line-height: 1.6; }
+  .dash-files { display: flex; flex-direction: column; gap: 8px; }
+  .btn-download {
+    display: flex; align-items: center; justify-content: center; gap: 8px;
+    width: 100%; padding: 12px; background: var(--navy);
+    color: var(--white); font-family: var(--sans); font-size: 0.88rem;
+    font-weight: 600; border: none; border-radius: 8px; cursor: pointer;
+    transition: all 0.2s; text-decoration: none;
+  }
+  .btn-download:hover { background: var(--navy-mid); transform: translateY(-1px); }
+  .btn-download.downloading { opacity: 0.6; cursor: wait; }
+  .btn-download svg { flex-shrink: 0; }
+
+  /* Locked card */
+  .dash-card.locked { opacity: 0.5; }
+  .dash-card.locked .dash-card-header { background: var(--muted); }
+  .dash-card.locked .dash-card-section { color: rgba(255,255,255,0.5); }
+  .dash-card.locked .dash-card-pages-num { color: rgba(255,255,255,0.5); }
+  .btn-buy {
+    display: flex; align-items: center; justify-content: center; gap: 8px;
+    width: 100%; padding: 12px; background: var(--gold);
+    color: var(--navy-deep); font-family: var(--sans); font-size: 0.88rem;
+    font-weight: 700; border: none; border-radius: 8px; cursor: pointer;
+    transition: all 0.2s; text-decoration: none;
+  }
+  .btn-buy:hover { background: var(--gold-light); transform: translateY(-1px); }
+
+  /* Status badge */
+  .status-badge {
+    display: inline-block; font-size: 0.65rem; font-weight: 700;
+    letter-spacing: 0.1em; text-transform: uppercase; padding: 3px 10px;
+    border-radius: 100px;
+  }
+  .status-badge.owned { background: rgba(45,157,92,0.15); color: var(--green); }
+  .status-badge.locked { background: rgba(113,128,150,0.15); color: var(--muted); }
+
+  /* ── Loading spinner ───────────────────────────────────── */
+  .spinner {
+    width: 20px; height: 20px; border: 2.5px solid transparent;
+    border-top-color: currentColor; border-radius: 50%;
+    animation: spin 0.7s linear infinite; display: inline-block;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  /* ── Toast notification ────────────────────────────────── */
+  .toast {
+    position: fixed; bottom: 24px; right: 24px; z-index: 9999;
+    background: var(--navy); color: var(--white); padding: 14px 20px;
+    border-radius: 8px; font-size: 0.85rem; font-weight: 500;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.3); transform: translateY(100px);
+    opacity: 0; transition: all 0.3s ease;
+  }
+  .toast.show { transform: translateY(0); opacity: 1; }
+  .toast.error { background: var(--red); }
+  .toast.success { background: var(--green); }
+
+  /* ── Responsive ────────────────────────────────────────── */
+  @media (max-width: 560px) {
+    .login-card { padding: 36px 24px; }
+    .dash-grid { grid-template-columns: 1fr; }
+    .dash-welcome { font-size: 1.4rem; }
+    .portal-container { padding: 32px 16px 60px; }
+  }
+
+  /* ── Gold bar ──────────────────────────────────────────── */
+  .gold-bar { height: 3px; background: linear-gradient(90deg, transparent, var(--gold), var(--gold-light), var(--gold), transparent); }
+</style>
+</head>
+<body>
+
+<!-- Nav -->
+<nav class="portal-nav">
+  <div class="nav-brand">
+    <span class="nav-brand-main">The Contractor Operating System</span>
+    <span class="nav-brand-sub">Member Portal</span>
+  </div>
+  <div class="nav-right" id="nav-right" style="display:none;">
+    <span class="nav-email" id="nav-email"></span>
+    <button class="btn-logout" id="btn-logout">Sign Out</button>
+  </div>
+</nav>
+<div class="gold-bar"></div>
+<div class="grid-bg"></div>
+
+<!-- LOGIN SCREEN -->
+<div class="login-screen" id="login-screen">
+  <div class="login-card">
+    <div class="login-logo">
+      <h2>COS</h2>
+      <p>Member Portal</p>
+    </div>
+    <div class="login-divider"></div>
+    <div class="login-title">Sign in to your account</div>
+    <div class="login-subtitle">Enter your email and we'll send you a magic link — no password needed.</div>
+    <form id="login-form">
+      <input type="email" class="login-input" id="login-email" placeholder="you@company.com" required autocomplete="email">
+      <button type="submit" class="btn-login" id="btn-send-link">Send Magic Link</button>
+    </form>
+    <div class="login-message" id="login-message"></div>
+    <div class="login-footer">
+      Don't have an account? <a href="https://klamb67-svg.github.io/cos-sales-page/">Purchase the COS</a>
+    </div>
+  </div>
+</div>
+
+<!-- DASHBOARD -->
+<div class="dashboard" id="dashboard">
+  <div class="portal-container">
+    <div class="dash-header">
+      <h1 class="dash-welcome">Welcome back.</h1>
+      <p class="dash-tagline">Your purchased sections are ready to download below.</p>
+    </div>
+    <div class="dash-grid" id="dash-grid">
+      <!-- Cards injected by JS -->
+    </div>
+  </div>
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast"></div>
+
+<script>
+// ── Config ──────────────────────────────────────────────────────
+const SUPABASE_URL = 'https://jgazdkmigiccehgyqfrq.supabase.co';
+const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImpnYXpka21pZ2ljY2VoZ3lxZnJxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzIzMTA5MTAsImV4cCI6MjA4Nzg4NjkxMH0.x0x5kxrxSOKDgFLc-d6J7K3AG-qraaNabaVG1hMZym0';
+const PORTAL_URL = 'https://klamb67-svg.github.io/cos-sales-page/portal';
+
+const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+// Section metadata
+const SECTIONS = [
+  {
+    id: 'section_1',
+    num: '01',
+    title: 'Sales & Lead Management',
+    pages: '544',
+    desc: 'CSR scripts, objection handling, booking protocols, reactivation campaigns, pipeline KPIs.',
+    files: [
+      { path: 'section_1/COS_Section01_MainVault.pdf', label: 'Main Vault PDF' },
+      { path: 'section_1/COS_Section01_DeliverablesPacket.pdf', label: 'Deliverables Packet' }
+    ],
+    buyUrl: 'https://buy.stripe.com/test_28E5kw6Zf5ijcFk6hpbsc00',
+    price: '$235'
+  },
+  {
+    id: 'section_2',
+    num: '02',
+    title: 'Field Operations & Service Delivery',
+    pages: '693',
+    desc: 'Zone scheduling, dispatch workflows, technician performance, after-hours protocols.',
+    files: [
+      { path: 'section_2/COS_Section02_MainVault.pdf', label: 'Main Vault PDF' },
+      { path: 'section_2/COS_Section02_DeliverablesPacket.pdf', label: 'Deliverables Packet' }
+    ],
+    buyUrl: 'https://buy.stripe.com/test_7sYfZa2IZ8uv48OcFNbsc01',
+    price: '$285'
+  },
+  {
+    id: 'section_3',
+    num: '03',
+    title: 'Pricing, Revenue & Financial Systems',
+    pages: '258',
+    desc: 'Fully burdened labor rate, overhead allocation, membership programs, collections.',
+    files: [
+      { path: 'section_3/COS_Section03_MainVault.pdf', label: 'Main Vault PDF' },
+      { path: 'section_3/COS_Section03_DeliverablesPacket.pdf', label: 'Deliverables Packet' }
+    ],
+    buyUrl: 'https://buy.stripe.com/test_dRmaEQ2IZcKL20G9tBbsc02',
+    price: '$210'
+  },
+  {
+    id: 'section_4',
+    num: '04',
+    title: 'People, Growth & Scaling Systems',
+    pages: '119',
+    desc: 'Hiring math, structured onboarding, retention systems, financial readiness.',
+    files: [
+      { path: 'section_4/COS_Section04_MainVault.pdf', label: 'Main Vault PDF' },
+      { path: 'section_4/COS_Section04_DeliverablesPacket.pdf', label: 'Deliverables Packet' }
+    ],
+    buyUrl: 'https://buy.stripe.com/test_8x2aEQ83j9yzgVAbBJbsc03',
+    price: '$185'
+  }
+];
+
+// ── DOM refs ────────────────────────────────────────────────────
+const loginScreen = document.getElementById('login-screen');
+const dashboard = document.getElementById('dashboard');
+const dashGrid = document.getElementById('dash-grid');
+const loginForm = document.getElementById('login-form');
+const loginEmail = document.getElementById('login-email');
+const btnSendLink = document.getElementById('btn-send-link');
+const loginMessage = document.getElementById('login-message');
+const navRight = document.getElementById('nav-right');
+const navEmail = document.getElementById('nav-email');
+const btnLogout = document.getElementById('btn-logout');
+const toast = document.getElementById('toast');
+
+// ── Toast helper ────────────────────────────────────────────────
+function showToast(msg, type = '') {
+  toast.textContent = msg;
+  toast.className = 'toast ' + type;
+  setTimeout(() => toast.classList.add('show'), 10);
+  setTimeout(() => toast.classList.remove('show'), 3500);
+}
+
+// ── Auth: Send magic link ───────────────────────────────────────
+loginForm.addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const email = loginEmail.value.trim();
+  if (!email) return;
+
+  btnSendLink.disabled = true;
+  btnSendLink.innerHTML = '<span class="spinner"></span> Sending...';
+  loginMessage.className = 'login-message';
+  loginMessage.style.display = 'none';
+
+  const { error } = await supabase.auth.signInWithOtp({
+    email,
+    options: { emailRedirectTo: PORTAL_URL }
+  });
+
+  if (error) {
+    loginMessage.className = 'login-message error';
+    loginMessage.textContent = error.message;
+    loginMessage.style.display = 'block';
+  } else {
+    loginMessage.className = 'login-message success';
+    loginMessage.innerHTML = '✓ Magic link sent! Check your email and click the link to sign in.<br><small style="opacity:0.7;">It may take a minute. Check spam if you don\'t see it.</small>';
+    loginMessage.style.display = 'block';
+  }
+
+  btnSendLink.disabled = false;
+  btnSendLink.textContent = 'Send Magic Link';
+});
+
+// ── Auth: Sign out ──────────────────────────────────────────────
+btnLogout.addEventListener('click', async () => {
+  await supabase.auth.signOut();
+  showLogin();
+});
+
+// ── View toggling ───────────────────────────────────────────────
+function showLogin() {
+  loginScreen.style.display = 'flex';
+  dashboard.classList.remove('active');
+  navRight.style.display = 'none';
+}
+
+function showDashboard(email) {
+  loginScreen.style.display = 'none';
+  dashboard.classList.add('active');
+  navRight.style.display = 'flex';
+  navEmail.textContent = email;
+}
+
+// ── Fetch user's section access ─────────────────────────────────
+async function getUserAccess() {
+  const { data, error } = await supabase
+    .from('section_access')
+    .select('section_id');
+
+  if (error) {
+    console.error('Error fetching access:', error);
+    return [];
+  }
+  return data.map(row => row.section_id);
+}
+
+// ── Download file via Edge Function ─────────────────────────────
+async function downloadFile(sectionId, filePath, btn) {
+  btn.classList.add('downloading');
+  const origHTML = btn.innerHTML;
+  btn.innerHTML = '<span class="spinner"></span> Generating link...';
+
+  try {
+    const { data: { session } } = await supabase.auth.getSession();
+    if (!session) {
+      showToast('Session expired. Please sign in again.', 'error');
+      showLogin();
+      return;
+    }
+
+    const response = await fetch(`${SUPABASE_URL}/functions/v1/get-download-url`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${session.access_token}`
+      },
+      body: JSON.stringify({ section_id: sectionId, file_path: filePath })
+    });
+
+    const result = await response.json();
+
+    if (!response.ok) {
+      throw new Error(result.error || 'Download failed');
+    }
+
+    // Open the signed URL in a new tab to trigger download
+    window.open(result.url, '_blank');
+    showToast('Download started!', 'success');
+
+  } catch (err) {
+    console.error('Download error:', err);
+    showToast(err.message || 'Download failed. Please try again.', 'error');
+  } finally {
+    btn.classList.remove('downloading');
+    btn.innerHTML = origHTML;
+  }
+}
+
+// ── Render dashboard cards ──────────────────────────────────────
+function renderDashboard(ownedSections) {
+  dashGrid.innerHTML = '';
+
+  SECTIONS.forEach(section => {
+    const owned = ownedSections.includes(section.id);
+    const card = document.createElement('div');
+    card.className = `dash-card${owned ? '' : ' locked'}`;
+
+    if (owned) {
+      card.innerHTML = `
+        <div class="dash-card-header">
+          <div>
+            <div class="dash-card-section">Section ${section.num} <span class="status-badge owned">Owned</span></div>
+            <div class="dash-card-title">${section.title}</div>
+          </div>
+          <div class="dash-card-pages">
+            <div class="dash-card-pages-num">${section.pages}</div>
+            <div class="dash-card-pages-label">pages</div>
+          </div>
+        </div>
+        <div class="dash-card-body">
+          <div class="dash-card-desc">${section.desc}</div>
+          <div class="dash-files">
+            ${section.files.map(file => `
+              <button class="btn-download" onclick="downloadFile('${section.id}', '${file.path}', this)">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                ${file.label}
+              </button>
+            `).join('')}
+          </div>
+        </div>
+      `;
+    } else {
+      card.innerHTML = `
+        <div class="dash-card-header">
+          <div>
+            <div class="dash-card-section">Section ${section.num} <span class="status-badge locked">Not Purchased</span></div>
+            <div class="dash-card-title">${section.title}</div>
+          </div>
+          <div class="dash-card-pages">
+            <div class="dash-card-pages-num">${section.pages}</div>
+            <div class="dash-card-pages-label">pages</div>
+          </div>
+        </div>
+        <div class="dash-card-body">
+          <div class="dash-card-desc">${section.desc}</div>
+          <a href="${section.buyUrl}" class="btn-buy">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+            Purchase Section ${section.num} — ${section.price}
+          </a>
+        </div>
+      `;
+    }
+
+    dashGrid.appendChild(card);
+  });
+}
+
+// ── Init: Check auth state ──────────────────────────────────────
+async function init() {
+  // Listen for auth state changes (handles magic link redirect)
+  supabase.auth.onAuthStateChange(async (event, session) => {
+    if (event === 'SIGNED_IN' && session) {
+      showDashboard(session.user.email);
+      const owned = await getUserAccess();
+      renderDashboard(owned);
+    } else if (event === 'SIGNED_OUT') {
+      showLogin();
+    }
+  });
+
+  // Check if already logged in
+  const { data: { session } } = await supabase.auth.getSession();
+  if (session) {
+    showDashboard(session.user.email);
+    const owned = await getUserAccess();
+    renderDashboard(owned);
+  } else {
+    showLogin();
+  }
+}
+
+init();
+</script>
+</body>
+</html>
