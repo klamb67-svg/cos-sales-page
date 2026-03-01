@@ -263,7 +263,7 @@ const SUPABASE_URL = 'https://jgazdkmigiccehgyqfrq.supabase.co';
 const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImpnYXpka21pZ2ljY2VoZ3lxZnJxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzIzMTA5MTAsImV4cCI6MjA4Nzg4NjkxMH0.x0x5kxrxSOKDgFLc-d6J7K3AG-qraaNabaVG1hMZym0';
 const PORTAL_URL = 'https://klamb67-svg.github.io/cos-sales-page/portal';
 
-const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
 // Section metadata
 const SECTIONS = [
@@ -353,7 +353,7 @@ loginForm.addEventListener('submit', async (e) => {
   loginMessage.className = 'login-message';
   loginMessage.style.display = 'none';
 
-  const { error } = await supabase.auth.signInWithOtp({
+  const { error } = await sb.auth.signInWithOtp({
     email,
     options: { emailRedirectTo: PORTAL_URL }
   });
@@ -374,7 +374,7 @@ loginForm.addEventListener('submit', async (e) => {
 
 // ── Auth: Sign out ──────────────────────────────────────────────
 btnLogout.addEventListener('click', async () => {
-  await supabase.auth.signOut();
+  await sb.auth.signOut();
   showLogin();
 });
 
@@ -394,7 +394,7 @@ function showDashboard(email) {
 
 // ── Fetch user's section access ─────────────────────────────────
 async function getUserAccess() {
-  const { data, error } = await supabase
+  const { data, error } = await sb
     .from('section_access')
     .select('section_id');
 
@@ -412,7 +412,7 @@ async function downloadFile(sectionId, filePath, btn) {
   btn.innerHTML = '<span class="spinner"></span> Generating link...';
 
   try {
-    const { data: { session } } = await supabase.auth.getSession();
+    const { data: { session } } = await sb.auth.getSession();
     if (!session) {
       showToast('Session expired. Please sign in again.', 'error');
       showLogin();
@@ -509,7 +509,7 @@ function renderDashboard(ownedSections) {
 // ── Init: Check auth state ──────────────────────────────────────
 async function init() {
   // Listen for auth state changes (handles magic link redirect)
-  supabase.auth.onAuthStateChange(async (event, session) => {
+  sb.auth.onAuthStateChange(async (event, session) => {
     if (event === 'SIGNED_IN' && session) {
       showDashboard(session.user.email);
       const owned = await getUserAccess();
@@ -520,7 +520,7 @@ async function init() {
   });
 
   // Check if already logged in
-  const { data: { session } } = await supabase.auth.getSession();
+  const { data: { session } } = await sb.auth.getSession();
   if (session) {
     showDashboard(session.user.email);
     const owned = await getUserAccess();
