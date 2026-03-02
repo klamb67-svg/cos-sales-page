@@ -150,15 +150,15 @@
   .value-intro { text-align: center; margin-bottom: 64px; }
   .value-intro h2 { font-size: clamp(1.8rem, 3.5vw, 2.8rem); color: var(--navy); margin-bottom: 16px; }
   .section-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(460px, 1fr)); gap: 24px; }
-  .section-card { background: var(--white); border-radius: 12px; overflow: hidden; box-shadow: 0 2px 16px rgba(0,0,0,0.06); transition: transform 0.25s, box-shadow 0.25s; border: 1px solid var(--mid); display: flex; flex-direction: column; }
+  .section-card { background: var(--white); border-radius: 12px; overflow: hidden; box-shadow: 0 2px 16px rgba(0,0,0,0.06); transition: transform 0.25s, box-shadow 0.25s; border: 1px solid var(--mid); }
   .section-card:hover { transform: translateY(-4px); box-shadow: 0 12px 40px rgba(0,0,0,0.1); }
   .section-card-header { background: var(--navy); padding: 24px 28px 20px; display: flex; justify-content: space-between; align-items: flex-start; }
   .section-card-num { font-size: 0.65rem; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; color: var(--gold); margin-bottom: 6px; }
   .section-card-title { font-family: var(--serif); font-size: 1.25rem; color: var(--white); font-weight: 700; line-height: 1.25; }
   .section-card-pages { text-align: right; }
-  .section-card-pages-num { font-family: var(--serif); font-size: 2rem; font-weight: 900; color: var(--gold); line-height: 1; }
-  .section-card-pages-label { font-size: 0.6rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(255,255,255,0.4); }
-  .section-card-body { padding: 24px 28px; flex: 1; }
+  .section-card-pages-num { font-family: var(--sans); font-size: 0.95rem; font-weight: 600; color: rgba(255,255,255,0.5); line-height: 1; }
+  .section-card-pages-label { font-size: 0.7rem; font-weight: 500; color: rgba(255,255,255,0.3); margin-left: 3px; }
+  .section-card-body { padding: 24px 28px; }
   .section-card-desc { font-size: 0.88rem; color: var(--muted); line-height: 1.65; margin-bottom: 20px; }
   .chapter-list { list-style: none; display: flex; flex-direction: column; gap: 8px; }
   .chapter-list li { display: flex; justify-content: space-between; align-items: center; font-size: 0.82rem; padding: 6px 0; border-bottom: 1px solid var(--light); }
@@ -171,8 +171,8 @@
   .value-total-bar { background: var(--navy); border-radius: 12px; padding: 32px 40px; margin-top: 32px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 24px; }
   .value-total-left h3 { font-size: 1rem; color: rgba(255,255,255,0.7); margin-bottom: 4px; }
   .value-total-left p { font-size: 0.82rem; color: rgba(255,255,255,0.4); }
-  .value-total-right { display: flex; align-items: center; justify-content: center; gap: 24px; flex: 1; min-width: 0; }
-  .value-total-num { font-family: var(--serif); font-style: normal; font-size: 3rem; font-weight: 900; color: var(--gold); }
+  .value-total-right { display: flex; align-items: baseline; gap: 12px; }
+  .value-total-num { font-family: var(--serif); font-size: 3rem; font-weight: 900; color: var(--gold); }
   .value-total-detail { font-size: 0.8rem; color: rgba(255,255,255,0.5); }
 
   /* ── Comparison ───────────────────────────────────────────────── */
@@ -238,9 +238,6 @@
   .btn-purchase:hover { background: var(--navy-mid); transform: translateY(-1px); }
   .pricing-card.featured .btn-purchase { background: var(--gold); color: var(--navy-deep); }
   .pricing-card.featured .btn-purchase:hover { background: var(--gold-light); }
-  .card-cta { padding: 0 28px 20px; }
-  .btn-purchase.btn-section-buy { background: var(--gold); color: var(--navy-deep); }
-  .btn-purchase.btn-section-buy:hover { background: var(--gold-light); transform: translateY(-1px); }
   .pricing-price-was { font-size: 1.25rem; font-weight: 600; color: rgba(255,255,255,0.38); text-decoration: line-through; margin-bottom: 4px; }
   .pricing-save-badge { display: inline-block; background: rgba(200,146,42,0.18); border: 1px solid rgba(200,146,42,0.4); color: var(--gold); font-size: 0.72rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; padding: 3px 10px; border-radius: 100px; margin-top: 6px; }
   .pricing-launch-note { font-size: 0.76rem; color: rgba(255,255,255,0.42); margin-top: 8px; margin-bottom: 4px; font-style: italic; letter-spacing: 0.02em; }
@@ -331,7 +328,7 @@
     <a href="#value" class="nav-link">What's Included</a>
     <a href="#purchase" class="nav-link">Pricing</a>
     <a href="#faq" class="nav-link">FAQ</a>
-    <a href="https://mmdocuments.com/portal/" class="nav-cta" style="background:transparent;border:1.5px solid var(--gold);color:var(--gold);">Member Login</a>
+    <a href="#purchase" class="nav-cta">Click Now to Save $200</a>
   </div>
 </nav>
 
@@ -348,16 +345,16 @@
         Stop Building Your Business from Scratch.<br><em>Run It from a Complete System.</em>
       </h1>
       <p class="hero-sub">
-        141 standalone field-ready deliverables covering every system an independent HVAC or plumbing contractor runs on — scripts, calculators, protocols, reference cards, checklists. Buy once. Own everything. No subscription required.
+        80 standalone field-ready deliverables covering every system an independent HVAC or plumbing contractor runs on — scripts, calculators, protocols, reference cards, checklists. Buy once. Own everything. No subscription required.
       </p>
       <div class="hero-stats">
         <div class="hero-stat">
-          <div class="hero-stat-num"><span class="counter" data-target="141">0</span></div>
+          <div class="hero-stat-num"><span class="counter" data-target="80">0</span></div>
           <div class="hero-stat-label">Documents</div>
         </div>
         <div class="hero-stat-divider"></div>
         <div class="hero-stat">
-          <div class="hero-stat-num"><span class="counter" data-target="2279">0</span></div>
+          <div class="hero-stat-num"><span class="counter" data-target="2307">0</span></div>
           <div class="hero-stat-label">Total Pages</div>
         </div>
         <div class="hero-stat-divider"></div>
@@ -372,7 +369,11 @@
         </div>
       </div>
       <div class="hero-cta-group">
-        <a href="#samples-section" class="nav-cta">Preview 3 Documents Free</a>
+        <a href="#purchase" class="btn-primary">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+          Get the Full Vault — $875
+        </a>
+        <a href="#samples" class="btn-secondary">Preview 3 documents free →</a>
       </div>
     </div>
   </div>
@@ -436,7 +437,7 @@
         <span class="eyebrow">The Solution</span>
         <div class="section-rule"></div>
         <h2>The complete operating system.<br><em>Pre-built. Print-ready. Yours permanently.</em></h2>
-        <p>Other programs teach you concepts, then send you home to build everything yourself. The COS hands you the finished documents — 141 standalone, field-ready deliverables covering every operational domain your business runs on.</p>
+        <p>Other programs teach you concepts, then send you home to build everything yourself. The COS hands you the finished documents — 80 standalone, field-ready deliverables covering every operational domain your business runs on.</p>
         <p>This isn't a course. There are no videos to watch, no calls to attend, no portal that disappears when you cancel. It's a document library. You open it and run your business from it.</p>
         <div class="solution-pillars">
           <div class="solution-pillar">
@@ -493,7 +494,7 @@
             <div class="doc-line"></div>
           </div>
           <div class="doc-count-badge">
-            141<small>docs</small>
+            80<small>docs</small>
           </div>
         </div>
       </div>
@@ -534,7 +535,7 @@
     <div class="value-intro fade-up">
       <span class="eyebrow">What's Inside</span>
       <div class="section-rule center"></div>
-      <h2>Four complete business systems. 2,279 pages. 23 working spreadsheets.</h2>
+      <h2>Four complete business systems. 2,307 pages. 23 working spreadsheets.</h2>
       <p class="lead" style="max-width:580px;margin:16px auto 0;">Every section is a complete domain. Buy the one you need most, or get the full vault and have the answer to every operational question — ready when you need it.</p>
     </div>
     <div class="section-cards">
@@ -544,10 +545,13 @@
             <div class="section-card-num">Section 01</div>
             <div class="section-card-title">Sales &amp; Lead Management</div>
           </div>
+          <div class="section-card-pages">
+            <div class="section-card-pages-num">544</div>
+            <div class="section-card-pages-label">pages</div>
+          </div>
         </div>
         <div class="section-card-body">
           <p class="section-card-desc">Your front-line commercial engine. Converts inbound calls into booked jobs, builds recurring revenue, and keeps your customer base active between service calls.</p>
-          <p class="section-card-desc" style="margin-top:4px;margin-bottom:20px;">544 pages</p>
           <ul class="chapter-list">
             <li><span class="chapter-name">Ch 1.1 — Sales Playbook</span><span class="chapter-count">CSR scripts, pricing tools, follow-up templates</span></li>
             <li><span class="chapter-name">Ch 1.2 — Lead Magnets &amp; Retention</span><span class="chapter-count">Seasonal campaigns, engagement sequences</span></li>
@@ -561,7 +565,6 @@
           <span class="section-card-price-label">Section 1 only</span>
           <span class="section-card-price-val">$235</span>
         </div>
-        <div class="card-cta"><a href="https://buy.stripe.com/test_28E5kw6Zf5ijcFk6hpbsc00" class="btn-purchase btn-section-buy">Get Section 1 — $235</a></div>
       </div>
 
       <div class="section-card fade-up fade-up-delay-1">
@@ -570,10 +573,13 @@
             <div class="section-card-num">Section 02</div>
             <div class="section-card-title">Field Operations &amp; Service Delivery</div>
           </div>
+          <div class="section-card-pages">
+            <div class="section-card-pages-num">693</div>
+            <div class="section-card-pages-label">pages</div>
+          </div>
         </div>
         <div class="section-card-body">
           <p class="section-card-desc">The operational layer that turns individual jobs into a running system. Zone scheduling, dispatch workflows, technician performance, and after-hours protocols.</p>
-          <p class="section-card-desc" style="margin-top:4px;margin-bottom:20px;">693 pages</p>
           <ul class="chapter-list">
             <li><span class="chapter-name">Ch 2.1 — Job Management Systems</span><span class="chapter-count">Zone tracking, job lifecycle, tech KPIs</span></li>
             <li><span class="chapter-name">Ch 2.2 — Dispatch Workflow</span><span class="chapter-count">Dispatch brief, quality KPIs, priority protocols</span></li>
@@ -587,7 +593,6 @@
           <span class="section-card-price-label">Section 2 only</span>
           <span class="section-card-price-val">$285</span>
         </div>
-        <div class="card-cta"><a href="https://buy.stripe.com/test_7sYfZa2IZ8uv48OcFNbsc01" class="btn-purchase btn-section-buy">Get Section 2 — $285</a></div>
       </div>
 
       <div class="section-card fade-up fade-up-delay-2">
@@ -596,10 +601,13 @@
             <div class="section-card-num">Section 03</div>
             <div class="section-card-title">Pricing, Revenue &amp; Financial Systems</div>
           </div>
+          <div class="section-card-pages">
+            <div class="section-card-pages-num">258</div>
+            <div class="section-card-pages-label">pages</div>
+          </div>
         </div>
         <div class="section-card-body">
           <p class="section-card-desc">Replaces gut-feel pricing with a defensible cost-based model. Membership program architecture, collections discipline, and cash flow visibility.</p>
-          <p class="section-card-desc" style="margin-top:4px;margin-bottom:20px;">258 pages</p>
           <ul class="chapter-list">
             <li><span class="chapter-name">Ch 3.1 — Pricing for Profit</span><span class="chapter-count">FBLR, overhead allocation, margin math</span></li>
             <li><span class="chapter-name">Ch 3.2 — Recurring Revenue &amp; Memberships</span><span class="chapter-count">3-tier program design, pitch scripts, retention</span></li>
@@ -611,7 +619,6 @@
           <span class="section-card-price-label">Section 3 only</span>
           <span class="section-card-price-val">$210</span>
         </div>
-        <div class="card-cta"><a href="https://buy.stripe.com/test_dRmaEQ2IZcKL20G9tBbsc02" class="btn-purchase btn-section-buy">Get Section 3 — $210</a></div>
       </div>
 
       <div class="section-card fade-up fade-up-delay-1">
@@ -620,10 +627,13 @@
             <div class="section-card-num">Section 04</div>
             <div class="section-card-title">People, Growth &amp; Scaling Systems</div>
           </div>
+          <div class="section-card-pages">
+            <div class="section-card-pages-num">119</div>
+            <div class="section-card-pages-label">pages</div>
+          </div>
         </div>
         <div class="section-card-body">
           <p class="section-card-desc">The infrastructure for adding headcount without adding chaos. Hiring math, structured onboarding, retention systems, and the financial readiness framework for scaling.</p>
-          <p class="section-card-desc" style="margin-top:4px;margin-bottom:20px;">119 pages</p>
           <ul class="chapter-list">
             <li><span class="chapter-name">Ch 4.1 — Financial Readiness for Growth</span><span class="chapter-count">Gross margin, cash reserve, true hire cost</span></li>
             <li><span class="chapter-name">Ch 4.2 — Recruiting &amp; Selection</span><span class="chapter-count">Job post templates, candidate scoring</span></li>
@@ -635,21 +645,22 @@
           <span class="section-card-price-label">Section 4 only</span>
           <span class="section-card-price-val">$185</span>
         </div>
-        <div class="card-cta"><a href="https://buy.stripe.com/test_8x2aEQ83j9yzgVAbBJbsc03" class="btn-purchase btn-section-buy">Get Section 4 — $185</a></div>
       </div>
     </div>
 
     <div class="value-total-bar fade-up">
       <div class="value-total-left">
         <h3>All four sections together</h3>
-        <p>2,279 pages · 141 standalone deliverables · 23 working spreadsheets · instant download</p>
+        <p>2,307 pages · 80 standalone deliverables · 23 working spreadsheets · instant download</p>
       </div>
-      <div class="value-total-right">
-        <div class="value-total-num">$875<sup style="font-size:0.5em; vertical-align:super">*</sup></div>
-        <a href="https://buy.stripe.com/test_aFa4gs97neSTfRw6hpbsc05" class="nav-cta" style="white-space:nowrap;">Click Now to Save $200</a>
+      <div class="value-total-right" style="display:flex;align-items:center;gap:28px;flex-wrap:wrap;">
+        <div>
+          <div class="value-total-num">$875</div>
+          <div class="value-total-detail">one-time · no subscription</div>
+        </div>
+        <a href="https://buy.stripe.com/test_3cI8wI83j5ijfRw35dbsc04" class="btn-primary" style="white-space:nowrap;">Get the Full Vault — $875</a>
       </div>
     </div>
-    <p style="text-align:center; font-size:0.78rem; color:#718096; margin-top:8px;">* One-time purchase · No subscription</p>
   </div>
 </section>
 
@@ -687,7 +698,7 @@
           </tr>
           <tr>
             <td>Ready-to-use operational documents</td>
-            <td class="col-cos"><span class="check">✓ 141 standalone deliverables included</span></td>
+            <td class="col-cos"><span class="check">✓ 80 standalone deliverables included</span></td>
             <td><span class="partial">~ Some templates, varies</span></td>
             <td><span class="cross">✗ You build everything yourself</span></td>
           </tr>
@@ -742,7 +753,7 @@
           <div class="sample-card-title">CSR Inbound Call Script — Booking Conversion</div>
           <div class="sample-card-desc">The complete inbound call script your CSRs use to convert service calls into booked appointments — including objection responses and dispatch handoff language.</div>
           <div class="sample-card-format">PDF · 4 pages</div>
-          <a href="samples/D-1.4-01_Standard_Inbound_Call_Script.pdf" class="btn-sample" download>
+          <a href="#samples" class="btn-sample">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
             Download Free
           </a>
@@ -752,17 +763,17 @@
           <div class="sample-card-title">Fully Burdened Labor Rate Calculator</div>
           <div class="sample-card-desc">Excel spreadsheet that calculates the true hourly cost of a field technician — base wages, burden, vehicle, overhead — and the minimum billable rate before profit begins.</div>
           <div class="sample-card-format">Excel (.xlsx) · Live formulas</div>
-          <a href="samples/COS_S03_D-3.1-03_FullyBurdenedLaborRate.xlsx" class="btn-sample" download>
+          <a href="#samples" class="btn-sample">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
             Download Free
           </a>
         </div>
         <div class="sample-card fade-up fade-up-delay-2">
-          <div class="sample-card-type">Section 4</div>
-          <div class="sample-card-title">Unicorn Job Ad Template</div>
-          <div class="sample-card-desc">A complete fill-in-the-blank job ad written to attract skilled craftsmen and filter out bad candidates before the first call.</div>
-          <div class="sample-card-format">PDF · Fill-in template</div>
-          <a href="samples/D-4.2-03_Unicorn_Job_Ad_Template.pdf" class="btn-sample" download>
+          <div class="sample-card-type">Protocol · Section 2</div>
+          <div class="sample-card-title">Technician Field Arrival Protocol</div>
+          <div class="sample-card-desc">The pre-call, on-site arrival, and first-impression protocol your techs follow on every job — covering communication, appearance, and the first 90 seconds with the customer.</div>
+          <div class="sample-card-format">PDF · Laminate-ready format</div>
+          <a href="#samples" class="btn-sample">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
             Download Free
           </a>
@@ -792,14 +803,14 @@
         </div>
         <span class="pricing-onetime">✓ One-time · Instant download · Yours forever</span>
         <ul class="pricing-includes">
-          <li>544 pages of sales and lead management documents</li>
+          <li>664 pages of sales and lead management documents</li>
           <li>CSR scripts, objection handling library, booking protocols</li>
           <li>Reactivation campaigns, pipeline KPIs, sales dashboard</li>
           <li>6 live Excel spreadsheets (CLV calculator, quote tracker, and more)</li>
           <li>Main Vault PDF + Companion Deliverables Packet</li>
           <li class="muted">Sections 2, 3, and 4 not included</li>
         </ul>
-        <div class="card-cta"><a href="https://buy.stripe.com/test_28E5kw6Zf5ijcFk6hpbsc00" class="btn-purchase btn-section-buy">Get Section 1 — $235</a></div>
+        <a href="#purchase" class="btn-purchase">Get Section 1 — $235</a>
       </div>
 
       <!-- Tier 2: Featured -->
@@ -812,8 +823,8 @@
         </div>
         <span class="pricing-onetime">✓ One-time · Instant download · Yours forever</span>
         <ul class="pricing-includes">
-          <li><strong>All 141 standalone field-use deliverables</strong></li>
-          <li>2,279 total pages — Sales, Operations, Finance, People</li>
+          <li><strong>All 80 standalone field-use deliverables</strong></li>
+          <li>2,307 total pages — Sales, Operations, Finance, People</li>
           <li>23 live Excel spreadsheets with working formulas</li>
           <li>4 Main Vault PDFs + 4 Deliverables Packet PDFs</li>
           <li>All 23 working calculators and dashboards</li>
@@ -821,7 +832,7 @@
           <li>Complete financial tools: labor rate, cash reserve, margin math</li>
           <li>Full onboarding and culture system for your team</li>
         </ul>
-        <a href="https://buy.stripe.com/test_aFa4gs97neSTfRw6hpbsc05" class="nav-cta">Click Now to Save $200</a>
+        <a href="#purchase" class="btn-purchase">Click Now to Save $200</a>
       </div>
 
       <!-- Tier 3 -->
@@ -840,7 +851,7 @@
           <li>Main Vault PDF + Deliverables Packet for selected section</li>
           <li class="muted">All 4 individually totals $915</li>
         </ul>
-        <a href="#value" class="btn-purchase">Choose a Section</a>
+        <a href="#purchase" class="btn-purchase">Choose a Section</a>
       </div>
     </div>
 
@@ -849,6 +860,7 @@
         <p><strong>The math is simple.</strong> All four sections purchased individually total $915. The Full Vault at $875 gets you everything in one shot, with one download, and one decision.</p>
         <p style="font-size:0.8rem;color:var(--muted);margin-top:4px;">Each section purchase is final. No partial credit toward the Full Vault.</p>
       </div>
+      <a href="#purchase">Click Now to Save $200</a>
     </div>
 
     <div class="pricing-guarantee fade-up">
@@ -903,7 +915,7 @@
           <span class="faq-chevron">▼</span>
         </button>
         <div class="faq-a">
-          Free resources are fragments. A blog post on objection handling. A Reddit thread on pricing. A YouTube video on hiring. You still have to synthesize them, format them, calibrate them to your business, and actually build the document. The COS delivers 141 finished standalone documents — structured, formatted, calibrated with field-observed ranges, and ready to use. The value isn't the information. It's the hours of work already done.
+          Free resources are fragments. A blog post on objection handling. A Reddit thread on pricing. A YouTube video on hiring. You still have to synthesize them, format them, calibrate them to your business, and actually build the document. The COS delivers 80 finished standalone documents — structured, formatted, calibrated with field-observed ranges, and ready to use. The value isn't the information. It's the hours of work already done.
         </div>
       </div>
       <div class="faq-item">
@@ -955,13 +967,13 @@
     </div>
     <div class="fade-up" style="max-width:680px;margin:0 auto;">
       <h2 style="font-size:clamp(1.6rem,3vw,2.2rem);margin-bottom:24px;text-align:center;">Built by someone who watched small contractors get left behind.</h2>
-      <p style="font-size:1.05rem;line-height:1.8;color:var(--text);margin-bottom:20px;">During my years as a rural mail carrier I have spoken with many small HVAC and plumbing owner-operators that are working hard, running lean, figuring it out without the systems that larger companies take for granted. They started out as an individual just trying to make a living for their family. Soon the business grew, techs were hired and they added to the size of the business but without a company framework. The contractor needs to focus on their customers not creating the framework to become a successful and functional business.</p>
+      <p style="font-size:1.05rem;line-height:1.8;color:var(--text);margin-bottom:20px;">I spent years as a rural mail carrier. Every route, I drove past small HVAC and plumbing trucks — owner-operators working hard, running lean, figuring it out without the systems that larger companies take for granted.</p>
       <p style="font-size:1.05rem;line-height:1.8;color:var(--text);margin-bottom:20px;">The programs that existed were either $10,000 coaching memberships built for seven-figure operations, or generic video courses that handed you a framework and sent you home to build everything yourself. Nothing met independent contractors where they actually were.</p>
-      <p style="font-size:1.05rem;line-height:1.8;color:var(--text);margin-bottom:20px;">So I built this vault. Using AI tools, documented industry frameworks, and field-observed operational benchmarks, I built the system to cover all the needs those contractors had — 398 source documents, refined into 141 standalone field-ready deliverables covering every domain a 1-to-5 truck operation runs on.</p>
+      <p style="font-size:1.05rem;line-height:1.8;color:var(--text);margin-bottom:20px;">So I built it. Using AI tools, documented industry frameworks, and field-observed operational benchmarks, I built the system I wish those contractors had — 398 source documents, refined into 80 standalone field-ready deliverables covering every domain a 1-to-5 truck operation runs on.</p>
       <p style="font-size:1.05rem;line-height:1.8;color:var(--text);margin-bottom:32px;">I'm not a contractor. I'm the person who built the most comprehensive operational document system available for independent contractors at a price that doesn't require you to already be winning.</p>
       <div style="background:var(--navy);border-radius:10px;padding:24px 28px;border-left:4px solid var(--gold);">
         <p style="font-size:0.92rem;line-height:1.7;color:rgba(255,255,255,0.8);margin:0;font-style:italic;">"Every protocol, script, and calculator in the COS is built from documented industry best practices, field-observed performance ranges, and operational frameworks used by successful independent contractors. The structure is proven. You calibrate the numbers to your market."</p>
-        <p style="font-size:0.82rem;color:var(--gold);font-weight:600;margin-top:12px;margin-bottom:0;">— Keith Lamb, Founder · MMDocuments · Nimix Networks</p>
+        <p style="font-size:0.82rem;color:var(--gold);font-weight:600;margin-top:12px;margin-bottom:0;">— Nimix, Founder · MMDocuments · Nimix Networks</p>
       </div>
     </div>
   </div>
@@ -978,11 +990,11 @@
     <p class="fade-up fade-up-delay-1">Systems that build themselves are expensive. They're made of confusion, inconsistency, and the judgment of whoever showed up today. The COS replaces them with something you can hand to anyone and know it'll hold.</p>
     <div class="final-cta-stats fade-up fade-up-delay-2">
       <div class="final-stat">
-        <div class="final-stat-num">141</div>
+        <div class="final-stat-num">80</div>
         <div class="final-stat-label">Standalone Deliverables</div>
       </div>
       <div class="final-stat">
-        <div class="final-stat-num">2,279</div>
+        <div class="final-stat-num">2,307</div>
         <div class="final-stat-label">Pages</div>
       </div>
       <div class="final-stat">
@@ -994,7 +1006,10 @@
         <div class="final-stat-label">One-Time · Own It Forever</div>
       </div>
     </div>
-    <a href="https://buy.stripe.com/test_aFa4gs97neSTfRw6hpbsc05" class="nav-cta fade-up fade-up-delay-3" style="margin:0 auto;display:inline-flex;">Click Now to Save $200</a>
+    <a href="#purchase" class="btn-primary fade-up fade-up-delay-3" style="margin:0 auto;display:inline-flex;">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+      Get the Full Vault — $875
+    </a>
   </div>
 </section>
 <div class="gold-bar"></div>
@@ -1005,6 +1020,7 @@
     <div class="footer-brand">The Contractor Operating System <span>·</span> MMDocuments</div>
     <div class="footer-meta">
       <strong>mmdocuments.com</strong><br>
+      Questions? <a href="mailto:support@mmdocuments.com" style="color:rgba(255,255,255,0.5);text-decoration:none;">support@mmdocuments.com</a><br>
       Powered by <strong>Nimix Networks</strong><br>
       <span>© 2026 MMDocuments. All rights reserved.</span>
     </div>
