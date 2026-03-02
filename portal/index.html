@@ -7,260 +7,125 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-<!-- Supabase -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<!-- Adobe PDF Embed API — free, get your key at adobe.com/go/dcsdks_credentials -->
 <script src="https://documentservices.adobe.com/view-sdk/viewer.js"></script>
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
   :root {
-    --navy: #1B2A4A;
-    --navy-deep: #0D1B30;
-    --navy-mid: #243558;
-    --gold: #C8922A;
-    --gold-light: #E0A83A;
-    --white: #FFFFFF;
-    --off-white: #F8F6F0;
-    --light: #F4F6F9;
-    --mid: #E2E8F0;
-    --text: #2D3748;
-    --muted: #718096;
-    --green: #2D9D5C;
-    --red: #C53030;
+    --navy: #1B2A4A; --navy-deep: #0D1B30; --navy-mid: #243558;
+    --gold: #C8922A; --gold-light: #E0A83A;
+    --white: #FFFFFF; --off-white: #F8F6F0; --light: #F4F6F9; --mid: #E2E8F0;
+    --text: #2D3748; --muted: #718096; --green: #2D9D5C; --red: #C53030;
     --serif: 'Playfair Display', Georgia, serif;
     --sans: 'Inter', system-ui, sans-serif;
   }
   html { scroll-behavior: smooth; }
-  body {
-    font-family: var(--sans); font-size: 16px; line-height: 1.65;
-    color: var(--text); background: var(--navy-deep);
-    min-height: 100vh; overflow-x: hidden;
-  }
+  body { font-family: var(--sans); font-size: 16px; line-height: 1.65; color: var(--text); background: var(--navy-deep); min-height: 100vh; overflow-x: hidden; }
 
-  /* ── Nav ────────────────────────────────────────────────── */
-  .portal-nav {
-    background: rgba(13,27,48,0.97); backdrop-filter: blur(12px);
-    border-bottom: 1px solid rgba(200,146,42,0.2);
-    padding: 0 24px; height: 64px;
-    display: flex; align-items: center; justify-content: space-between;
-    position: sticky; top: 0; z-index: 100;
-  }
+  .portal-nav { background: rgba(13,27,48,0.97); backdrop-filter: blur(12px); border-bottom: 1px solid rgba(200,146,42,0.2); padding: 0 24px; height: 64px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100; }
   .nav-brand { display: flex; flex-direction: column; gap: 1px; }
   .nav-brand-main { font-family: var(--serif); font-size: 1.05rem; font-weight: 700; color: var(--white); }
   .nav-brand-sub { font-size: 0.62rem; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--gold); }
   .nav-right { display: flex; align-items: center; gap: 16px; }
   .nav-email { font-size: 0.8rem; color: rgba(255,255,255,0.5); }
-  .btn-logout {
-    background: transparent; border: 1px solid rgba(255,255,255,0.2);
-    color: rgba(255,255,255,0.6); font-size: 0.78rem; font-weight: 600;
-    padding: 6px 14px; border-radius: 4px; cursor: pointer;
-    transition: all 0.2s; font-family: var(--sans);
-  }
+  .btn-logout { background: transparent; border: 1px solid rgba(255,255,255,0.2); color: rgba(255,255,255,0.6); font-size: 0.78rem; font-weight: 600; padding: 6px 14px; border-radius: 4px; cursor: pointer; transition: all 0.2s; font-family: var(--sans); }
   .btn-logout:hover { border-color: var(--gold); color: var(--gold); }
+  .btn-logout:disabled { opacity: 0.5; cursor: not-allowed; }
 
-  /* ── Grid background ───────────────────────────────────── */
-  .grid-bg {
-    position: fixed; inset: 0; z-index: 0;
-    background-image: linear-gradient(rgba(200,146,42,0.04) 1px, transparent 1px),
-                      linear-gradient(90deg, rgba(200,146,42,0.04) 1px, transparent 1px);
-    background-size: 44px 44px; pointer-events: none;
-  }
+  .grid-bg { position: fixed; inset: 0; z-index: 0; background-image: linear-gradient(rgba(200,146,42,0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(200,146,42,0.04) 1px, transparent 1px); background-size: 44px 44px; pointer-events: none; }
+  .gold-bar { height: 3px; background: linear-gradient(90deg, transparent, var(--gold), var(--gold-light), var(--gold), transparent); }
 
-  /* ── Container ─────────────────────────────────────────── */
-  .portal-container {
-    position: relative; z-index: 1;
-    max-width: 900px; margin: 0 auto; padding: 48px 24px 80px;
-  }
+  .portal-container { position: relative; z-index: 1; max-width: 900px; margin: 0 auto; padding: 48px 24px 80px; }
 
-  /* ── Login Screen ──────────────────────────────────────── */
-  .login-screen {
-    display: flex; align-items: center; justify-content: center;
-    min-height: calc(100vh - 64px);
-  }
-  .login-card {
-    background: var(--white); border-radius: 16px;
-    padding: 48px 40px; width: 100%; max-width: 420px;
-    box-shadow: 0 24px 80px rgba(0,0,0,0.4);
-    text-align: center;
-  }
-  .login-logo { margin-bottom: 8px; }
+  /* Login */
+  .login-screen { display: flex; align-items: center; justify-content: center; min-height: calc(100vh - 67px); }
+  .login-card { background: var(--white); border-radius: 16px; padding: 48px 40px; width: 100%; max-width: 420px; box-shadow: 0 24px 80px rgba(0,0,0,0.4); text-align: center; }
   .login-logo h2 { font-family: var(--serif); font-size: 1.5rem; color: var(--navy); }
   .login-logo p { font-size: 0.7rem; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--gold); margin-top: 2px; }
   .login-divider { width: 48px; height: 3px; background: var(--gold); margin: 20px auto; }
   .login-title { font-size: 1rem; font-weight: 600; color: var(--navy); margin-bottom: 4px; }
   .login-subtitle { font-size: 0.85rem; color: var(--muted); margin-bottom: 28px; }
-  .login-input {
-    width: 100%; padding: 14px 16px; border: 1.5px solid var(--mid);
-    border-radius: 8px; font-family: var(--sans); font-size: 0.95rem;
-    color: var(--text); outline: none; transition: border-color 0.2s;
-    margin-bottom: 16px;
-  }
+  .login-input { width: 100%; padding: 14px 16px; border: 1.5px solid var(--mid); border-radius: 8px; font-family: var(--sans); font-size: 0.95rem; color: var(--text); outline: none; transition: border-color 0.2s; margin-bottom: 16px; }
   .login-input:focus { border-color: var(--gold); }
   .login-input::placeholder { color: var(--muted); }
-  .btn-login {
-    width: 100%; padding: 14px; background: var(--gold);
-    color: var(--navy-deep); font-family: var(--sans); font-size: 0.95rem;
-    font-weight: 700; border: none; border-radius: 8px; cursor: pointer;
-    transition: all 0.2s; letter-spacing: 0.02em;
-  }
+  .btn-login { width: 100%; padding: 14px; background: var(--gold); color: var(--navy-deep); font-family: var(--sans); font-size: 0.95rem; font-weight: 700; border: none; border-radius: 8px; cursor: pointer; transition: all 0.2s; }
   .btn-login:hover { background: var(--gold-light); transform: translateY(-1px); }
   .btn-login:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
-  .login-message {
-    margin-top: 16px; padding: 12px 16px; border-radius: 8px;
-    font-size: 0.85rem; line-height: 1.5; display: none;
-  }
+  .login-message { margin-top: 16px; padding: 12px 16px; border-radius: 8px; font-size: 0.85rem; line-height: 1.5; display: none; }
   .login-message.success { display: block; background: #F0FFF4; color: var(--green); border: 1px solid #C6F6D5; }
   .login-message.error { display: block; background: #FFF5F5; color: var(--red); border: 1px solid #FED7D7; }
   .login-footer { margin-top: 24px; font-size: 0.78rem; color: var(--muted); }
   .login-footer a { color: var(--gold); text-decoration: none; }
 
-  /* ── Dashboard ─────────────────────────────────────────── */
+  /* Dashboard */
   .dashboard { display: none; }
   .dashboard.active { display: block; }
   .dash-header { margin-bottom: 40px; }
   .dash-welcome { font-family: var(--serif); font-size: 1.8rem; color: var(--white); margin-bottom: 4px; }
   .dash-welcome em { color: var(--gold); font-style: normal; }
   .dash-tagline { font-size: 0.92rem; color: rgba(255,255,255,0.5); }
-
   .dash-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(380px, 1fr)); gap: 20px; }
 
-  .dash-card {
-    background: var(--white); border-radius: 12px; overflow: hidden;
-    box-shadow: 0 4px 24px rgba(0,0,0,0.15);
-    transition: transform 0.2s, box-shadow 0.2s;
-  }
+  .dash-card { background: var(--white); border-radius: 12px; overflow: hidden; box-shadow: 0 4px 24px rgba(0,0,0,0.15); transition: transform 0.2s, box-shadow 0.2s; }
   .dash-card:hover { transform: translateY(-3px); box-shadow: 0 12px 40px rgba(0,0,0,0.2); }
-  .dash-card-header {
-    background: var(--navy); padding: 20px 24px;
-    display: flex; justify-content: space-between; align-items: center;
-  }
+  .dash-card-header { background: var(--navy); padding: 20px 24px; display: flex; justify-content: space-between; align-items: center; }
   .dash-card-section { font-size: 0.62rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--gold); margin-bottom: 4px; }
   .dash-card-title { font-family: var(--serif); font-size: 1.1rem; color: var(--white); font-weight: 700; line-height: 1.25; }
-  .dash-card-pages { text-align: right; }
   .dash-card-pages-num { font-family: var(--serif); font-size: 1.6rem; font-weight: 900; color: var(--gold); line-height: 1; }
-  .dash-card-pages-label { font-size: 0.55rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(255,255,255,0.4); }
+  .dash-card-pages-label { font-size: 0.55rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(255,255,255,0.4); text-align: right; }
   .dash-card-body { padding: 20px 24px; }
   .dash-card-desc { font-size: 0.85rem; color: var(--muted); margin-bottom: 16px; line-height: 1.6; }
   .dash-files { display: flex; flex-direction: column; gap: 10px; }
 
-  /* File row: label + View + Download buttons */
-  .file-row { display: flex; align-items: center; gap: 8px; }
-  .file-label { font-size: 0.82rem; font-weight: 600; color: var(--text); flex: 1; }
-  .btn-view {
-    display: inline-flex; align-items: center; gap: 6px;
-    padding: 9px 14px; background: var(--navy-deep);
-    color: var(--white); font-family: var(--sans); font-size: 0.8rem;
-    font-weight: 600; border: none; border-radius: 6px; cursor: pointer;
-    transition: all 0.2s; white-space: nowrap; text-decoration: none;
-    flex-shrink: 0;
-  }
+  .file-row { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+  .file-label { font-size: 0.82rem; font-weight: 600; color: var(--text); flex: 1; min-width: 120px; }
+  .btn-view { display: inline-flex; align-items: center; gap: 6px; padding: 9px 14px; background: var(--navy-deep); color: var(--white); font-family: var(--sans); font-size: 0.8rem; font-weight: 600; border: none; border-radius: 6px; cursor: pointer; transition: all 0.2s; white-space: nowrap; flex-shrink: 0; }
   .btn-view:hover { background: var(--navy-mid); transform: translateY(-1px); }
-  .btn-download {
-    display: inline-flex; align-items: center; gap: 6px;
-    padding: 9px 14px; background: var(--gold);
-    color: var(--navy-deep); font-family: var(--sans); font-size: 0.8rem;
-    font-weight: 700; border: none; border-radius: 6px; cursor: pointer;
-    transition: all 0.2s; white-space: nowrap; text-decoration: none;
-    flex-shrink: 0;
-  }
+  .btn-download { display: inline-flex; align-items: center; gap: 6px; padding: 9px 14px; background: var(--gold); color: var(--navy-deep); font-family: var(--sans); font-size: 0.8rem; font-weight: 700; border: none; border-radius: 6px; cursor: pointer; transition: all 0.2s; white-space: nowrap; flex-shrink: 0; }
   .btn-download:hover { background: var(--gold-light); transform: translateY(-1px); }
-  .btn-download.full-width, .btn-view.full-width {
-    width: 100%; justify-content: center; flex-shrink: unset;
-  }
-  .btn-download.loading, .btn-view.loading { opacity: 0.6; cursor: wait; pointer-events: none; }
+  .btn-view.loading, .btn-download.loading { opacity: 0.6; cursor: wait; pointer-events: none; }
 
-  /* Locked card */
   .dash-card.locked { opacity: 0.55; }
   .dash-card.locked .dash-card-header { background: var(--muted); }
   .dash-card.locked .dash-card-section { color: rgba(255,255,255,0.5); }
   .dash-card.locked .dash-card-pages-num { color: rgba(255,255,255,0.5); }
-  .btn-buy {
-    display: flex; align-items: center; justify-content: center; gap: 8px;
-    width: 100%; padding: 12px; background: var(--gold);
-    color: var(--navy-deep); font-family: var(--sans); font-size: 0.88rem;
-    font-weight: 700; border: none; border-radius: 8px; cursor: pointer;
-    transition: all 0.2s; text-decoration: none;
-  }
+  .btn-buy { display: flex; align-items: center; justify-content: center; gap: 8px; width: 100%; padding: 12px; background: var(--gold); color: var(--navy-deep); font-family: var(--sans); font-size: 0.88rem; font-weight: 700; border: none; border-radius: 8px; cursor: pointer; transition: all 0.2s; text-decoration: none; }
   .btn-buy:hover { background: var(--gold-light); transform: translateY(-1px); }
 
-  /* Status badge */
-  .status-badge {
-    display: inline-block; font-size: 0.65rem; font-weight: 700;
-    letter-spacing: 0.1em; text-transform: uppercase; padding: 3px 10px;
-    border-radius: 100px;
-  }
+  .status-badge { display: inline-block; font-size: 0.65rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; padding: 3px 10px; border-radius: 100px; }
   .status-badge.owned { background: rgba(45,157,92,0.15); color: var(--green); }
   .status-badge.locked { background: rgba(113,128,150,0.15); color: var(--muted); }
 
-  /* ── Adobe PDF Viewer Modal ─────────────────────────────── */
-  .pdf-modal-overlay {
-    display: none; position: fixed; inset: 0; z-index: 9000;
-    background: rgba(8,14,26,0.92); backdrop-filter: blur(8px);
-    align-items: center; justify-content: center; padding: 24px;
-  }
+  /* PDF Modal */
+  .pdf-modal-overlay { display: none; position: fixed; inset: 0; z-index: 9000; background: rgba(8,14,26,0.92); backdrop-filter: blur(8px); align-items: center; justify-content: center; padding: 24px; }
   .pdf-modal-overlay.active { display: flex; }
-  .pdf-modal {
-    background: var(--white); border-radius: 12px; overflow: hidden;
-    width: 100%; max-width: 960px; height: 85vh;
-    display: flex; flex-direction: column;
-    box-shadow: 0 40px 120px rgba(0,0,0,0.6);
-  }
-  .pdf-modal-header {
-    background: var(--navy); padding: 14px 20px;
-    display: flex; align-items: center; justify-content: space-between;
-    flex-shrink: 0;
-  }
+  .pdf-modal { background: var(--white); border-radius: 12px; overflow: hidden; width: 100%; max-width: 960px; height: 85vh; display: flex; flex-direction: column; box-shadow: 0 40px 120px rgba(0,0,0,0.6); }
+  .pdf-modal-header { background: var(--navy); padding: 14px 20px; display: flex; align-items: center; justify-content: space-between; flex-shrink: 0; }
   .pdf-modal-title { font-family: var(--serif); font-size: 1rem; color: var(--white); }
   .pdf-modal-title span { color: var(--gold); }
-  .btn-close-modal {
-    background: transparent; border: 1px solid rgba(255,255,255,0.2);
-    color: rgba(255,255,255,0.7); font-size: 0.8rem; font-weight: 600;
-    padding: 6px 14px; border-radius: 4px; cursor: pointer;
-    transition: all 0.2s; font-family: var(--sans);
-  }
+  .btn-close-modal { background: transparent; border: 1px solid rgba(255,255,255,0.2); color: rgba(255,255,255,0.7); font-size: 0.8rem; font-weight: 600; padding: 6px 14px; border-radius: 4px; cursor: pointer; transition: all 0.2s; font-family: var(--sans); }
   .btn-close-modal:hover { border-color: var(--gold); color: var(--gold); }
   #adobe-pdf-viewer { flex: 1; width: 100%; }
 
-  /* ── Loading spinner ───────────────────────────────────── */
-  .spinner {
-    width: 14px; height: 14px; border: 2px solid transparent;
-    border-top-color: currentColor; border-radius: 50%;
-    animation: spin 0.7s linear infinite; display: inline-block;
-    flex-shrink: 0;
-  }
+  .spinner { width: 13px; height: 13px; border: 2px solid transparent; border-top-color: currentColor; border-radius: 50%; animation: spin 0.7s linear infinite; display: inline-block; flex-shrink: 0; }
   @keyframes spin { to { transform: rotate(360deg); } }
 
-  /* ── Toast notification ────────────────────────────────── */
-  .toast {
-    position: fixed; bottom: 24px; right: 24px; z-index: 9999;
-    background: var(--navy); color: var(--white); padding: 14px 20px;
-    border-radius: 8px; font-size: 0.85rem; font-weight: 500;
-    box-shadow: 0 8px 32px rgba(0,0,0,0.3); transform: translateY(100px);
-    opacity: 0; transition: all 0.3s ease;
-  }
+  .toast { position: fixed; bottom: 24px; right: 24px; z-index: 9999; background: var(--navy); color: var(--white); padding: 14px 20px; border-radius: 8px; font-size: 0.85rem; font-weight: 500; box-shadow: 0 8px 32px rgba(0,0,0,0.3); transform: translateY(100px); opacity: 0; transition: all 0.3s ease; }
   .toast.show { transform: translateY(0); opacity: 1; }
   .toast.error { background: var(--red); }
   .toast.success { background: var(--green); }
 
-  /* ── Responsive ────────────────────────────────────────── */
   @media (max-width: 560px) {
     .login-card { padding: 36px 24px; }
     .dash-grid { grid-template-columns: 1fr; }
     .dash-welcome { font-size: 1.4rem; }
     .portal-container { padding: 32px 16px 60px; }
-    .file-row { flex-wrap: wrap; }
-    .file-label { width: 100%; }
-    .btn-view, .btn-download { flex: 1; justify-content: center; }
-    .pdf-modal { height: 92vh; margin: 0; border-radius: 8px; }
+    .pdf-modal { height: 92vh; border-radius: 8px; }
   }
-
-  /* ── Gold bar ──────────────────────────────────────────── */
-  .gold-bar { height: 3px; background: linear-gradient(90deg, transparent, var(--gold), var(--gold-light), var(--gold), transparent); }
 </style>
 </head>
 <body>
 
-<!-- Nav -->
 <nav class="portal-nav">
   <div class="nav-brand">
     <span class="nav-brand-main">The Contractor Operating System</span>
@@ -274,13 +139,10 @@
 <div class="gold-bar"></div>
 <div class="grid-bg"></div>
 
-<!-- LOGIN SCREEN -->
+<!-- LOGIN -->
 <div class="login-screen" id="login-screen">
   <div class="login-card">
-    <div class="login-logo">
-      <h2>COS</h2>
-      <p>Member Portal</p>
-    </div>
+    <div class="login-logo"><h2>COS</h2><p>Member Portal</p></div>
     <div class="login-divider"></div>
     <div class="login-title">Sign in to your account</div>
     <div class="login-subtitle">Enter your email and we'll send you a magic link — no password needed.</div>
@@ -289,9 +151,7 @@
       <button type="submit" class="btn-login" id="btn-send-link">Send Magic Link</button>
     </form>
     <div class="login-message" id="login-message"></div>
-    <div class="login-footer">
-      Don't have an account? <a href="https://mmdocuments.com">Purchase the COS</a>
-    </div>
+    <div class="login-footer">Don't have an account? <a href="https://mmdocuments.com">Purchase the COS</a></div>
   </div>
 </div>
 
@@ -302,13 +162,11 @@
       <h1 class="dash-welcome">Welcome back.</h1>
       <p class="dash-tagline">Your purchased sections are ready to view and download below.</p>
     </div>
-    <div class="dash-grid" id="dash-grid">
-      <!-- Cards injected by JS -->
-    </div>
+    <div class="dash-grid" id="dash-grid"></div>
   </div>
 </div>
 
-<!-- Adobe PDF Viewer Modal -->
+<!-- PDF Viewer Modal -->
 <div class="pdf-modal-overlay" id="pdf-modal-overlay">
   <div class="pdf-modal">
     <div class="pdf-modal-header">
@@ -319,81 +177,61 @@
   </div>
 </div>
 
-<!-- Toast -->
 <div class="toast" id="toast"></div>
 
 <script>
 // ── Config ──────────────────────────────────────────────────────
-const SUPABASE_URL = 'https://jgazdkmigiccehgyqfrq.supabase.co';
+const SUPABASE_URL     = 'https://jgazdkmigiccehgyqfrq.supabase.co';
 const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImpnYXpka21pZ2ljY2VoZ3lxZnJxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzIzMTA5MTAsImV4cCI6MjA4Nzg4NjkxMH0.x0x5kxrxSOKDgFLc-d6J7K3AG-qraaNabaVG1hMZym0';
-const PORTAL_URL = 'https://mmdocuments.com/portal/';
-
-// ── REPLACE with your free Adobe API key ──────────────────────
-// Get it at: https://adobe.com/go/dcsdks_credentials (free, instant)
-const ADOBE_API_KEY = 'd28175085c474c38a3e939430cce491f';
+const PORTAL_URL       = 'https://mmdocuments.com/portal/';
+const ADOBE_API_KEY    = 'd28175085c474c38a3e939430cce491f';
 
 const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-// ── Section metadata ────────────────────────────────────────────
+// ── Sections ────────────────────────────────────────────────────
 const SECTIONS = [
   {
-    id: 'section_1',
-    num: '01',
-    title: 'Sales & Lead Management',
-    pages: '544',
+    id: 'section_1', num: '01', title: 'Sales & Lead Management', pages: '544',
     desc: 'CSR scripts, objection handling, booking protocols, reactivation campaigns, pipeline KPIs.',
     files: [
-      { path: 'section_1/COS_Section01_MainVault.pdf', label: 'Main Vault PDF', type: 'pdf' },
-      { path: 'section_1/COS_Section01_DeliverablesPacket.pdf', label: 'Deliverables Packet', type: 'pdf' }
+      { path: 'section_1/COS_Section01_MainVault.pdf', label: 'Main Vault PDF' },
+      { path: 'section_1/COS_Section01_DeliverablesPacket.pdf', label: 'Deliverables Packet' }
     ],
-    buyUrl: 'https://buy.stripe.com/test_28E5kw6Zf5ijcFk6hpbsc00',
-    price: '$235'
+    buyUrl: 'https://buy.stripe.com/test_28E5kw6Zf5ijcFk6hpbsc00', price: '$235'
   },
   {
-    id: 'section_2',
-    num: '02',
-    title: 'Field Operations & Service Delivery',
-    pages: '693',
+    id: 'section_2', num: '02', title: 'Field Operations & Service Delivery', pages: '693',
     desc: 'Zone scheduling, dispatch workflows, technician performance, after-hours protocols.',
     files: [
-      { path: 'section_2/COS_Section02_MainVault.pdf', label: 'Main Vault PDF', type: 'pdf' },
-      { path: 'section_2/COS_Section02_DeliverablesPacket.pdf', label: 'Deliverables Packet', type: 'pdf' }
+      { path: 'section_2/COS_Section02_MainVault.pdf', label: 'Main Vault PDF' },
+      { path: 'section_2/COS_Section02_DeliverablesPacket.pdf', label: 'Deliverables Packet' }
     ],
-    buyUrl: 'https://buy.stripe.com/test_7sYfZa2IZ8uv48OcFNbsc01',
-    price: '$285'
+    buyUrl: 'https://buy.stripe.com/test_7sYfZa2IZ8uv48OcFNbsc01', price: '$285'
   },
   {
-    id: 'section_3',
-    num: '03',
-    title: 'Pricing, Revenue & Financial Systems',
-    pages: '258',
+    id: 'section_3', num: '03', title: 'Pricing, Revenue & Financial Systems', pages: '258',
     desc: 'Fully burdened labor rate, overhead allocation, membership programs, collections.',
     files: [
-      { path: 'section_3/COS_Section03_MainVault.pdf', label: 'Main Vault PDF', type: 'pdf' },
-      { path: 'section_3/COS_Section03_DeliverablesPacket.pdf', label: 'Deliverables Packet', type: 'pdf' }
+      { path: 'section_3/COS_Section03_MainVault.pdf', label: 'Main Vault PDF' },
+      { path: 'section_3/COS_Section03_DeliverablesPacket.pdf', label: 'Deliverables Packet' }
     ],
     spreadsheets: [
-      { path: 'section_3/spreadsheets/COS_S03_D-3.1-03_FullyBurdenedLaborRate.xlsx', label: 'Labor Rate Calculator' },
+      { path: 'section_3/spreadsheets/COS_S03_D-3.1-03_FullyBurdenedLaborRate.xlsx', label: 'Labor Rate Calculator' }
     ],
-    buyUrl: 'https://buy.stripe.com/test_dRmaEQ2IZcKL20G9tBbsc02',
-    price: '$210'
+    buyUrl: 'https://buy.stripe.com/test_dRmaEQ2IZcKL20G9tBbsc02', price: '$210'
   },
   {
-    id: 'section_4',
-    num: '04',
-    title: 'People, Growth & Scaling Systems',
-    pages: '119',
+    id: 'section_4', num: '04', title: 'People, Growth & Scaling Systems', pages: '119',
     desc: 'Hiring math, structured onboarding, retention systems, financial readiness.',
     files: [
-      { path: 'section_4/COS_Section04_MainVault.pdf', label: 'Main Vault PDF', type: 'pdf' },
-      { path: 'section_4/COS_Section04_DeliverablesPacket.pdf', label: 'Deliverables Packet', type: 'pdf' }
+      { path: 'section_4/COS_Section04_MainVault.pdf', label: 'Main Vault PDF' },
+      { path: 'section_4/COS_Section04_DeliverablesPacket.pdf', label: 'Deliverables Packet' }
     ],
-    buyUrl: 'https://buy.stripe.com/test_8x2aEQ83j9yzgVAbBJbsc03',
-    price: '$185'
+    buyUrl: 'https://buy.stripe.com/test_8x2aEQ83j9yzgVAbBJbsc03', price: '$185'
   }
 ];
 
-// ── DOM refs ────────────────────────────────────────────────────
+// ── DOM ─────────────────────────────────────────────────────────
 const loginScreen  = document.getElementById('login-screen');
 const dashboard    = document.getElementById('dashboard');
 const dashGrid     = document.getElementById('dash-grid');
@@ -408,7 +246,7 @@ const toast        = document.getElementById('toast');
 const pdfOverlay   = document.getElementById('pdf-modal-overlay');
 const pdfTitle     = document.getElementById('pdf-modal-title');
 
-// ── Toast helper ────────────────────────────────────────────────
+// ── Toast ────────────────────────────────────────────────────────
 function showToast(msg, type = '') {
   toast.textContent = msg;
   toast.className = 'toast ' + type;
@@ -416,50 +254,7 @@ function showToast(msg, type = '') {
   setTimeout(() => toast.classList.remove('show'), 3500);
 }
 
-// ── Auth: Send magic link ───────────────────────────────────────
-loginForm.addEventListener('submit', async (e) => {
-  e.preventDefault();
-  const email = loginEmail.value.trim();
-  if (!email) return;
-
-  btnSendLink.disabled = true;
-  btnSendLink.innerHTML = '<span class="spinner"></span> Sending...';
-  loginMessage.className = 'login-message';
-  loginMessage.style.display = 'none';
-
-  const { error } = await sb.auth.signInWithOtp({
-    email,
-    options: { emailRedirectTo: PORTAL_URL }
-  });
-
-  if (error) {
-    loginMessage.className = 'login-message error';
-    loginMessage.textContent = error.message;
-    loginMessage.style.display = 'block';
-  } else {
-    loginMessage.className = 'login-message success';
-    loginMessage.innerHTML = '✓ Magic link sent! Check your email and click the link to sign in.<br><small style="opacity:0.7;">It may take a minute. Check spam if you don\'t see it.</small>';
-    loginMessage.style.display = 'block';
-  }
-
-  btnSendLink.disabled = false;
-  btnSendLink.textContent = 'Send Magic Link';
-});
-
-// ── Auth: Sign out ──────────────────────────────────────────────
-btnLogout.addEventListener('click', async () => {
-  btnLogout.textContent = 'Signing out...';
-  btnLogout.disabled = true;
-  const { error } = await sb.auth.signOut();
-  if (error) {
-    showToast('Sign out failed. Please try again.', 'error');
-    btnLogout.textContent = 'Sign Out';
-    btnLogout.disabled = false;
-  }
-  // onAuthStateChange will fire SIGNED_OUT and call showLogin()
-});
-
-// ── View toggling ───────────────────────────────────────────────
+// ── Show/hide screens ────────────────────────────────────────────
 function showLogin() {
   loginScreen.style.display = 'flex';
   dashboard.classList.remove('active');
@@ -475,39 +270,91 @@ function showDashboard(email) {
   navEmail.textContent = email;
 }
 
-// ── FIX: Fetch user's section access ───────────────────────────
-// Explicitly gets the current session access_token and waits for
-// the client to have a valid session before querying.
-async function getUserAccess() {
-  // Ensure we have a fresh session before querying
-  const { data: { session }, error: sessionError } = await sb.auth.getSession();
+// ── Magic link login ─────────────────────────────────────────────
+loginForm.addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const email = loginEmail.value.trim();
+  if (!email) return;
 
-  if (sessionError || !session) {
-    return [];
-  }
+  btnSendLink.disabled = true;
+  btnSendLink.innerHTML = '<span class="spinner"></span> Sending...';
+  loginMessage.className = 'login-message';
 
-  const { data, error } = await sb
-    .from('section_access')
-    .select('section_id');
+  const { error } = await sb.auth.signInWithOtp({
+    email,
+    options: { emailRedirectTo: PORTAL_URL }
+  });
 
   if (error) {
-    console.error('Error fetching section access:', error.message);
-    return [];
+    loginMessage.className = 'login-message error';
+    loginMessage.textContent = error.message;
+  } else {
+    loginMessage.className = 'login-message success';
+    loginMessage.innerHTML = '✓ Magic link sent! Check your email and click the link to sign in.<br><small style="opacity:0.7;">It may take a minute. Check spam if you don\'t see it.</small>';
   }
 
-  return (data || []).map(row => row.section_id);
+  btnSendLink.disabled = false;
+  btnSendLink.textContent = 'Send Magic Link';
+});
+
+// ── FIX: Sign out — try/catch + timeout so it never hangs ───────
+btnLogout.addEventListener('click', async () => {
+  btnLogout.textContent = 'Signing out...';
+  btnLogout.disabled = true;
+
+  try {
+    // Race: sign out OR 4-second timeout — whichever wins
+    await Promise.race([
+      sb.auth.signOut(),
+      new Promise(resolve => setTimeout(resolve, 4000))
+    ]);
+  } catch (err) {
+    // Network failure is OK — local session is still cleared
+  }
+
+  // Show login regardless of network outcome
+  showLogin();
+});
+
+// ── FIX: getUserAccess — direct REST call, bypasses JS client ───
+// Root cause: Supabase JS client session propagation can be
+// unreliable in certain browser environments (race condition in
+// the internal auth state). Direct REST call with explicit
+// Authorization header is 100% deterministic.
+async function getUserAccess(accessToken) {
+  try {
+    const response = await fetch(
+      `${SUPABASE_URL}/rest/v1/section_access?select=section_id`,
+      {
+        headers: {
+          'apikey': SUPABASE_ANON_KEY,
+          'Authorization': `Bearer ${accessToken}`,
+          'Content-Type': 'application/json'
+        }
+      }
+    );
+
+    if (!response.ok) {
+      console.error('section_access fetch failed:', response.status, await response.text());
+      return [];
+    }
+
+    const data = await response.json();
+    return Array.isArray(data) ? data.map(row => row.section_id) : [];
+
+  } catch (err) {
+    console.error('getUserAccess error:', err.message);
+    return [];
+  }
 }
 
-// ── Get signed URL from Edge Function ──────────────────────────
-async function getSignedUrl(filePath) {
-  const { data: { session } } = await sb.auth.getSession();
-  if (!session) throw new Error('Session expired. Please sign in again.');
-
+// ── getSignedUrl via Edge Function ──────────────────────────────
+async function getSignedUrl(filePath, accessToken) {
   const response = await fetch(`${SUPABASE_URL}/functions/v1/get-download-url`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
-      'Authorization': `Bearer ${session.access_token}`
+      'Authorization': `Bearer ${accessToken}`
     },
     body: JSON.stringify({ file_path: filePath })
   });
@@ -517,86 +364,63 @@ async function getSignedUrl(filePath) {
   return result.url;
 }
 
-// ── Download file ───────────────────────────────────────────────
+// ── Download ─────────────────────────────────────────────────────
 async function downloadFile(filePath, btn) {
   btn.classList.add('loading');
-  const origHTML = btn.innerHTML;
+  const orig = btn.innerHTML;
   btn.innerHTML = '<span class="spinner"></span> Getting link...';
 
   try {
-    const url = await getSignedUrl(filePath);
+    const { data: { session } } = await sb.auth.getSession();
+    if (!session) { showLogin(); return; }
+    const url = await getSignedUrl(filePath, session.access_token);
     window.open(url, '_blank');
     showToast('Download started!', 'success');
   } catch (err) {
-    if (err.message.includes('Session expired')) { showLogin(); }
     showToast(err.message || 'Download failed. Try again.', 'error');
   } finally {
     btn.classList.remove('loading');
-    btn.innerHTML = origHTML;
+    btn.innerHTML = orig;
   }
 }
 
-// ── View PDF in Adobe Embed viewer ─────────────────────────────
+// ── View PDF in Adobe Embed ──────────────────────────────────────
 async function viewPDF(filePath, fileName, btn) {
   btn.classList.add('loading');
-  const origHTML = btn.innerHTML;
+  const orig = btn.innerHTML;
   btn.innerHTML = '<span class="spinner"></span> Loading...';
 
   try {
-    const url = await getSignedUrl(filePath);
+    const { data: { session } } = await sb.auth.getSession();
+    if (!session) { showLogin(); return; }
+    const url = await getSignedUrl(filePath, session.access_token);
 
-    // Update modal title
     pdfTitle.innerHTML = `<span>${fileName}</span>`;
-
-    // Show overlay
     pdfOverlay.classList.add('active');
 
-    // Clear previous viewer
     const viewerEl = document.getElementById('adobe-pdf-viewer');
     viewerEl.innerHTML = '';
 
-    // Wait for Adobe SDK to be ready
-    document.addEventListener('adobe_dc_view_sdk.ready', function() {
-      renderAdobeViewer(url, fileName, viewerEl);
-    });
+    const launchViewer = () => {
+      new AdobeDC.View({ clientId: ADOBE_API_KEY, divId: 'adobe-pdf-viewer' })
+        .previewFile(
+          { content: { location: { url } }, metaData: { fileName } },
+          { embedMode: 'SIZED_CONTAINER', showDownloadPDF: true, showPrintPDF: true, showLeftHandPanel: true }
+        );
+    };
 
-    // If SDK is already ready
     if (window.AdobeDC) {
-      renderAdobeViewer(url, fileName, viewerEl);
+      launchViewer();
+    } else {
+      document.addEventListener('adobe_dc_view_sdk.ready', launchViewer, { once: true });
     }
 
   } catch (err) {
-    if (err.message.includes('Session expired')) { showLogin(); }
-    showToast(err.message || 'Could not load document. Try again.', 'error');
+    showToast(err.message || 'Could not load document.', 'error');
   } finally {
     btn.classList.remove('loading');
-    btn.innerHTML = origHTML;
+    btn.innerHTML = orig;
   }
-}
-
-function renderAdobeViewer(url, fileName, viewerEl) {
-  // Ensure the element has a unique ID
-  viewerEl.id = 'adobe-pdf-viewer';
-
-  const adobeDCView = new AdobeDC.View({
-    clientId: ADOBE_API_KEY,
-    divId: 'adobe-pdf-viewer'
-  });
-
-  adobeDCView.previewFile(
-    {
-      content: { location: { url } },
-      metaData: { fileName }
-    },
-    {
-      embedMode: 'SIZED_CONTAINER',
-      showDownloadPDF: true,
-      showPrintPDF: true,
-      showLeftHandPanel: true,
-      showPageControls: true,
-      dockPageControls: false
-    }
-  );
 }
 
 function closePDFViewer() {
@@ -604,17 +428,10 @@ function closePDFViewer() {
   document.getElementById('adobe-pdf-viewer').innerHTML = '';
 }
 
-// Close viewer on overlay background click
-pdfOverlay.addEventListener('click', (e) => {
-  if (e.target === pdfOverlay) closePDFViewer();
-});
+pdfOverlay.addEventListener('click', e => { if (e.target === pdfOverlay) closePDFViewer(); });
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closePDFViewer(); });
 
-// Close viewer on Escape key
-document.addEventListener('keydown', (e) => {
-  if (e.key === 'Escape') closePDFViewer();
-});
-
-// ── Render dashboard cards ──────────────────────────────────────
+// ── Render cards ─────────────────────────────────────────────────
 function renderDashboard(ownedSections) {
   dashGrid.innerHTML = '';
 
@@ -623,95 +440,101 @@ function renderDashboard(ownedSections) {
     const card = document.createElement('div');
     card.className = `dash-card${owned ? '' : ' locked'}`;
 
+    const header = `
+      <div class="dash-card-header">
+        <div>
+          <div class="dash-card-section">Section ${section.num}
+            <span class="status-badge ${owned ? 'owned' : 'locked'}">${owned ? 'Owned' : 'Not Purchased'}</span>
+          </div>
+          <div class="dash-card-title">${section.title}</div>
+        </div>
+        <div>
+          <div class="dash-card-pages-num">${section.pages}</div>
+          <div class="dash-card-pages-label">pages</div>
+        </div>
+      </div>`;
+
     if (owned) {
-      const pdfButtons = section.files.map(file => `
+      const pdfRows = section.files.map(f => `
         <div class="file-row">
-          <span class="file-label">${file.label}</span>
-          <button class="btn-view" onclick="viewPDF('${file.path}', '${file.label} — Section ${section.num}', this)">
+          <span class="file-label">${f.label}</span>
+          <button class="btn-view" onclick="viewPDF('${f.path}', '${f.label} — Section ${section.num}', this)">
             <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
             View
           </button>
-          <button class="btn-download" onclick="downloadFile('${file.path}', this)">
+          <button class="btn-download" onclick="downloadFile('${f.path}', this)">
             <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
             Download
           </button>
-        </div>
-      `).join('');
+        </div>`).join('');
 
-      const xlsxButtons = (section.spreadsheets || []).map(file => `
+      const xlsxRows = (section.spreadsheets || []).map(f => `
         <div class="file-row">
-          <span class="file-label">${file.label}</span>
-          <button class="btn-download" onclick="downloadFile('${file.path}', this)">
+          <span class="file-label">${f.label}</span>
+          <button class="btn-download" onclick="downloadFile('${f.path}', this)">
             <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
             Download
           </button>
-        </div>
-      `).join('');
+        </div>`).join('');
 
-      card.innerHTML = `
-        <div class="dash-card-header">
-          <div>
-            <div class="dash-card-section">Section ${section.num} <span class="status-badge owned">Owned</span></div>
-            <div class="dash-card-title">${section.title}</div>
-          </div>
-          <div class="dash-card-pages">
-            <div class="dash-card-pages-num">${section.pages}</div>
-            <div class="dash-card-pages-label">pages</div>
-          </div>
-        </div>
-        <div class="dash-card-body">
-          <div class="dash-card-desc">${section.desc}</div>
-          <div class="dash-files">
-            ${pdfButtons}
-            ${xlsxButtons}
-          </div>
-        </div>
-      `;
+      card.innerHTML = `${header}<div class="dash-card-body"><div class="dash-card-desc">${section.desc}</div><div class="dash-files">${pdfRows}${xlsxRows}</div></div>`;
     } else {
-      card.innerHTML = `
-        <div class="dash-card-header">
-          <div>
-            <div class="dash-card-section">Section ${section.num} <span class="status-badge locked">Not Purchased</span></div>
-            <div class="dash-card-title">${section.title}</div>
-          </div>
-          <div class="dash-card-pages">
-            <div class="dash-card-pages-num">${section.pages}</div>
-            <div class="dash-card-pages-label">pages</div>
-          </div>
-        </div>
-        <div class="dash-card-body">
-          <div class="dash-card-desc">${section.desc}</div>
-          <a href="${section.buyUrl}" class="btn-buy">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
-            Purchase Section ${section.num} — ${section.price}
-          </a>
-        </div>
-      `;
+      card.innerHTML = `${header}<div class="dash-card-body"><div class="dash-card-desc">${section.desc}</div><a href="${section.buyUrl}" class="btn-buy">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+        Purchase Section ${section.num} — ${section.price}
+      </a></div>`;
     }
 
     dashGrid.appendChild(card);
   });
 }
 
-// ── FIX: Init — handles ALL auth state events correctly ─────────
-// SIGNED_IN      → fresh login via magic link
-// INITIAL_SESSION → page refresh with existing session  ← was missing
-// TOKEN_REFRESHED → token auto-renewed                  ← was missing
-// SIGNED_OUT      → user signed out
+// ── FIX: Init — dual-track auth detection ────────────────────────
+//
+// THE BUG: onAuthStateChange(INITIAL_SESSION) can fire before the
+// listener is registered (race condition in Supabase JS v2 startup).
+// When that happens, the page stays blank forever.
+//
+// THE FIX: Dual-track. Both paths run. A flag (authHandled) ensures
+// only the first one that arrives actually renders the UI.
+//
+let authHandled = false;
+
+async function handleAuthSession(session) {
+  if (authHandled) return;  // Only the first caller wins
+  authHandled = true;
+
+  if (session) {
+    showDashboard(session.user.email);
+    const owned = await getUserAccess(session.access_token);
+    renderDashboard(owned);
+  } else {
+    showLogin();
+  }
+}
+
 async function init() {
+  // Track 1: onAuthStateChange (catches SIGNED_IN, INITIAL_SESSION, TOKEN_REFRESHED)
   sb.auth.onAuthStateChange(async (event, session) => {
-    if (session && (
-      event === 'SIGNED_IN' ||
-      event === 'INITIAL_SESSION' ||
-      event === 'TOKEN_REFRESHED'
-    )) {
-      showDashboard(session.user.email);
-      const owned = await getUserAccess();
-      renderDashboard(owned);
-    } else if (event === 'SIGNED_OUT' || (event === 'INITIAL_SESSION' && !session)) {
+    if (event === 'SIGNED_OUT') {
+      authHandled = false;  // Allow re-auth after sign out
       showLogin();
+      return;
     }
+    if (event === 'TOKEN_REFRESHED' && session) {
+      // Token refreshed — re-render with new token (don't use authHandled flag)
+      const owned = await getUserAccess(session.access_token);
+      renderDashboard(owned);
+      return;
+    }
+    // SIGNED_IN or INITIAL_SESSION
+    await handleAuthSession(session);
   });
+
+  // Track 2: Direct getSession() — fallback if INITIAL_SESSION fires before listener
+  // Runs immediately, races against Track 1.
+  const { data: { session } } = await sb.auth.getSession();
+  await handleAuthSession(session);
 }
 
 init();
