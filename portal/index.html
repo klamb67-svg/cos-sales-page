@@ -35,13 +35,7 @@
   .gold-bar { height: 3px; background: linear-gradient(90deg, transparent, var(--gold), var(--gold-light), var(--gold), transparent); }
   .portal-container { position: relative; z-index: 1; max-width: 900px; margin: 0 auto; padding: 48px 24px 80px; }
 
-  /* DEBUG PANEL */
-  .debug-panel { position: relative; z-index: 10; background: #1a1a2e; border-bottom: 2px solid #f59e0b; padding: 12px 24px; font-family: monospace; font-size: 0.75rem; color: #fbbf24; }
-  .debug-panel strong { color: #fff; }
-  .debug-panel .debug-row { margin-bottom: 4px; }
-  .debug-panel .debug-ok { color: #34d399; }
-  .debug-panel .debug-err { color: #f87171; }
-  .debug-dismiss { float: right; background: transparent; border: 1px solid #f59e0b; color: #f59e0b; padding: 2px 8px; border-radius: 3px; cursor: pointer; font-size: 0.7rem; font-family: var(--sans); }
+
 
   .login-screen { display: flex; align-items: center; justify-content: center; min-height: calc(100vh - 67px); }
   .login-card { background: var(--white); border-radius: 16px; padding: 48px 40px; width: 100%; max-width: 420px; box-shadow: 0 24px 80px rgba(0,0,0,0.4); text-align: center; }
@@ -134,19 +128,7 @@
     <button class="btn-logout" id="btn-logout">Sign Out</button>
   </div>
 </nav>
-<div class="gold-bar"></div>
-
-<!-- DEBUG PANEL -->
-<div class="debug-panel" id="debug-panel">
-  <button class="debug-dismiss" onclick="document.getElementById('debug-panel').style.display='none'">Dismiss</button>
-  <div class="debug-row"><strong>🔍 DEBUG — Screenshot and send to Rook</strong></div>
-  <div class="debug-row" id="dbg-uid">auth.uid: checking...</div>
-  <div class="debug-row" id="dbg-token">access_token: checking...</div>
-  <div class="debug-row" id="dbg-http">section_access fetch: checking...</div>
-  <div class="debug-row" id="dbg-ids">owned sections: checking...</div>
-  <div class="debug-row" id="dbg-fn-status">edge fn status: — (click View or Download to test)</div>
-  <div class="debug-row" id="dbg-fn-body">edge fn response: —</div>
-</div>
+<div class="gold-bar"></div></div>
 
 <div class="grid-bg"></div>
 
@@ -216,12 +198,6 @@ const toast        = document.getElementById('toast');
 const pdfOverlay   = document.getElementById('pdf-modal-overlay');
 const pdfTitle     = document.getElementById('pdf-modal-title');
 
-// Debug helpers
-function dbg(id, msg, ok) {
-  const el = document.getElementById(id);
-  if (el) { el.textContent = el.textContent.split(':')[0] + ': ' + msg; el.className = 'debug-row ' + (ok === true ? 'debug-ok' : ok === false ? 'debug-err' : ''); }
-}
-
 function showToast(msg, type = '') {
   toast.textContent = msg; toast.className = 'toast ' + type;
   setTimeout(() => toast.classList.add('show'), 10);
@@ -257,8 +233,6 @@ btnLogout.addEventListener('click', async () => {
 
 // ── getUserAccess with full debug output ─────────────────────────
 async function getUserAccess(accessToken, userId) {
-  dbg('dbg-uid', userId, null);
-  dbg('dbg-token', accessToken ? accessToken.substring(0, 40) + '...' : 'MISSING', !!accessToken);
 
   try {
     const url = `${SUPABASE_URL}/rest/v1/section_access?select=section_id`;
@@ -271,22 +245,17 @@ async function getUserAccess(accessToken, userId) {
     });
 
     const httpStatus = response.status;
-    dbg('dbg-http', 'HTTP ' + httpStatus + (httpStatus === 200 ? ' OK' : ' ERROR'), httpStatus === 200);
 
     const text = await response.text();
-    dbg('dbg-raw', text.substring(0, 200), httpStatus === 200 && text !== '[]');
 
     if (!response.ok) { return []; }
 
     let data;
     try { data = JSON.parse(text); } catch (e) { dbg('dbg-ids', 'JSON parse error: ' + e.message, false); return []; }
 
-    const ids = Array.isArray(data) ? data.map(row => String(row.section_id).trim()) : [];
-    dbg('dbg-ids', ids.length > 0 ? JSON.stringify(ids) : 'EMPTY ARRAY — 0 rows returned', ids.length > 0);
-    return ids;
+    return Array.isArray(data) ? data.map(row => String(row.section_id).trim()) : [];
 
   } catch (err) {
-    dbg('dbg-http', 'FETCH ERROR: ' + err.message, false);
     return [];
   }
 }
@@ -297,12 +266,7 @@ async function getSignedUrl(filePath, accessToken) {
     headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + accessToken, 'apikey': SUPABASE_ANON_KEY },
     body: JSON.stringify({ file_path: filePath })
   });
-  const statusEl = document.getElementById('dbg-fn-status');
-  const bodyEl = document.getElementById('dbg-fn-body');
-  if (statusEl) { statusEl.textContent = 'edge fn status: HTTP ' + response.status + (response.ok ? ' ✅ OK' : ' ❌ ERROR'); statusEl.className = 'debug-row ' + (response.ok ? 'debug-ok' : 'debug-err'); }
-  let result; let rawText = '';
-  try { rawText = await response.text(); result = JSON.parse(rawText); } catch(e) { result = { error: 'Non-JSON: ' + rawText.substring(0,80) }; }
-  if (bodyEl) { bodyEl.textContent = 'edge fn response: ' + JSON.stringify(result).substring(0,200); bodyEl.className = 'debug-row ' + (response.ok ? 'debug-ok' : 'debug-err'); }
+
   if (!response.ok) throw new Error((result && result.error) || 'HTTP ' + response.status);
   return result.url;
 }
