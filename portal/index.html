@@ -136,16 +136,16 @@
 </nav>
 <div class="gold-bar"></div>
 
-<!-- DEBUG PANEL — send a screenshot of this to Rook -->
+<!-- DEBUG PANEL -->
 <div class="debug-panel" id="debug-panel">
   <button class="debug-dismiss" onclick="document.getElementById('debug-panel').style.display='none'">Dismiss</button>
-  <div class="debug-row"><strong>🔍 DEBUG MODE — Screenshot this and send to Rook</strong></div>
+  <div class="debug-row"><strong>🔍 DEBUG — Screenshot and send to Rook</strong></div>
   <div class="debug-row" id="dbg-uid">auth.uid: checking...</div>
   <div class="debug-row" id="dbg-token">access_token: checking...</div>
-  <div class="debug-row" id="dbg-http">REST status: checking...</div>
-  <div class="debug-row" id="dbg-raw">raw response: checking...</div>
-  <div class="debug-row" id="dbg-ids">parsed section_ids: checking...</div>
-  <div class="debug-row" id="dbg-match">JS section ids: section_1, section_2, section_3, section_4</div>
+  <div class="debug-row" id="dbg-http">section_access fetch: checking...</div>
+  <div class="debug-row" id="dbg-ids">owned sections: checking...</div>
+  <div class="debug-row" id="dbg-fn-status">edge fn status: — (click View or Download to test)</div>
+  <div class="debug-row" id="dbg-fn-body">edge fn response: —</div>
 </div>
 
 <div class="grid-bg"></div>
@@ -297,8 +297,13 @@ async function getSignedUrl(filePath, accessToken) {
     headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + accessToken, 'apikey': SUPABASE_ANON_KEY },
     body: JSON.stringify({ file_path: filePath })
   });
-  const result = await response.json();
-  if (!response.ok) throw new Error(result.error || 'Failed to get document URL');
+  const statusEl = document.getElementById('dbg-fn-status');
+  const bodyEl = document.getElementById('dbg-fn-body');
+  if (statusEl) { statusEl.textContent = 'edge fn status: HTTP ' + response.status + (response.ok ? ' ✅ OK' : ' ❌ ERROR'); statusEl.className = 'debug-row ' + (response.ok ? 'debug-ok' : 'debug-err'); }
+  let result; let rawText = '';
+  try { rawText = await response.text(); result = JSON.parse(rawText); } catch(e) { result = { error: 'Non-JSON: ' + rawText.substring(0,80) }; }
+  if (bodyEl) { bodyEl.textContent = 'edge fn response: ' + JSON.stringify(result).substring(0,200); bodyEl.className = 'debug-row ' + (response.ok ? 'debug-ok' : 'debug-err'); }
+  if (!response.ok) throw new Error((result && result.error) || 'HTTP ' + response.status);
   return result.url;
 }
 
