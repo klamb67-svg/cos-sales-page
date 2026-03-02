@@ -172,7 +172,7 @@
   .value-total-left h3 { font-size: 1rem; color: rgba(255,255,255,0.7); margin-bottom: 4px; }
   .value-total-left p { font-size: 0.82rem; color: rgba(255,255,255,0.4); }
   .value-total-right { display: flex; align-items: center; justify-content: center; gap: 24px; flex: 1; min-width: 0; }
-  .value-total-num { font-family: var(--serif); font-size: 3rem; font-weight: 900; color: var(--gold); }
+  .value-total-num { font-family: var(--sans); font-style: normal; font-size: 3rem; font-weight: 900; color: var(--gold); }
   .value-total-detail { font-size: 0.8rem; color: rgba(255,255,255,0.5); }
 
   /* ── Comparison ───────────────────────────────────────────────── */
@@ -238,6 +238,9 @@
   .btn-purchase:hover { background: var(--navy-mid); transform: translateY(-1px); }
   .pricing-card.featured .btn-purchase { background: var(--gold); color: var(--navy-deep); }
   .pricing-card.featured .btn-purchase:hover { background: var(--gold-light); }
+  .card-cta { padding: 0 28px 20px; }
+  .btn-purchase.btn-section-buy { background: var(--gold); color: var(--navy-deep); }
+  .btn-purchase.btn-section-buy:hover { background: var(--gold-light); transform: translateY(-1px); }
   .pricing-price-was { font-size: 1.25rem; font-weight: 600; color: rgba(255,255,255,0.38); text-decoration: line-through; margin-bottom: 4px; }
   .pricing-save-badge { display: inline-block; background: rgba(200,146,42,0.18); border: 1px solid rgba(200,146,42,0.4); color: var(--gold); font-size: 0.72rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; padding: 3px 10px; border-radius: 100px; margin-top: 6px; }
   .pricing-launch-note { font-size: 0.76rem; color: rgba(255,255,255,0.42); margin-top: 8px; margin-bottom: 4px; font-style: italic; letter-spacing: 0.02em; }
@@ -558,7 +561,7 @@
           <span class="section-card-price-label">Section 1 only</span>
           <span class="section-card-price-val">$235</span>
         </div>
-        <div style="padding:0 28px 20px;"><a href="https://buy.stripe.com/test_28E5kw6Zf5ijcFk6hpbsc00" class="btn-purchase" style="background:var(--gold);color:var(--navy-deep);">Get Section 1 — $235</a></div>
+        <div class="card-cta"><a href="https://buy.stripe.com/test_28E5kw6Zf5ijcFk6hpbsc00" class="btn-purchase btn-section-buy">Get Section 1 — $235</a></div>
       </div>
 
       <div class="section-card fade-up fade-up-delay-1">
@@ -584,7 +587,7 @@
           <span class="section-card-price-label">Section 2 only</span>
           <span class="section-card-price-val">$285</span>
         </div>
-        <div style="padding:0 28px 20px;"><a href="https://buy.stripe.com/test_7sYfZa2IZ8uv48OcFNbsc01" class="btn-purchase" style="background:var(--gold);color:var(--navy-deep);">Get Section 2 — $285</a></div>
+        <div class="card-cta"><a href="https://buy.stripe.com/test_7sYfZa2IZ8uv48OcFNbsc01" class="btn-purchase btn-section-buy">Get Section 2 — $285</a></div>
       </div>
 
       <div class="section-card fade-up fade-up-delay-2">
@@ -608,7 +611,7 @@
           <span class="section-card-price-label">Section 3 only</span>
           <span class="section-card-price-val">$210</span>
         </div>
-        <div style="padding:0 28px 20px;"><a href="https://buy.stripe.com/test_dRmaEQ2IZcKL20G9tBbsc02" class="btn-purchase" style="background:var(--gold);color:var(--navy-deep);">Get Section 3 — $210</a></div>
+        <div class="card-cta"><a href="https://buy.stripe.com/test_dRmaEQ2IZcKL20G9tBbsc02" class="btn-purchase btn-section-buy">Get Section 3 — $210</a></div>
       </div>
 
       <div class="section-card fade-up fade-up-delay-1">
@@ -632,7 +635,7 @@
           <span class="section-card-price-label">Section 4 only</span>
           <span class="section-card-price-val">$185</span>
         </div>
-        <div style="padding:0 28px 20px;"><a href="https://buy.stripe.com/test_8x2aEQ83j9yzgVAbBJbsc03" class="btn-purchase" style="background:var(--gold);color:var(--navy-deep);">Get Section 4 — $185</a></div>
+        <div class="card-cta"><a href="https://buy.stripe.com/test_8x2aEQ83j9yzgVAbBJbsc03" class="btn-purchase btn-section-buy">Get Section 4 — $185</a></div>
       </div>
     </div>
 
@@ -796,7 +799,7 @@
           <li>Main Vault PDF + Companion Deliverables Packet</li>
           <li class="muted">Sections 2, 3, and 4 not included</li>
         </ul>
-        <a href="https://buy.stripe.com/test_28E5kw6Zf5ijcFk6hpbsc00" class="btn-purchase">Get Section 1 — $235</a>
+        <div class="card-cta"><a href="https://buy.stripe.com/test_28E5kw6Zf5ijcFk6hpbsc00" class="btn-purchase btn-section-buy">Get Section 1 — $235</a></div>
       </div>
 
       <!-- Tier 2: Featured -->
