@@ -178,10 +178,61 @@ const ADOBE_API_KEY     = 'd28175085c474c38a3e939430cce491f';
 const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
 const SECTIONS = [
-  { id: 'section_1', num: '01', title: 'Sales & Lead Management', pages: '664', desc: 'CSR scripts, objection handling, booking protocols, reactivation campaigns, pipeline KPIs.', files: [{ path: 'section_1/COS_Section01_MainVault.pdf', label: 'Main Vault PDF' }, { path: 'section_1/COS_Section01_DeliverablesPacket.pdf', label: 'Deliverables Packet' }], buyUrl: 'https://buy.stripe.com/test_28E5kw6Zf5ijcFk6hpbsc00', price: '$235' },
-  { id: 'section_2', num: '02', title: 'Field Operations & Service Delivery', pages: '1,036', desc: 'Zone scheduling, dispatch workflows, technician performance, after-hours protocols.', files: [{ path: 'section_2/COS_Section02_MainVault.pdf', label: 'Main Vault PDF' }, { path: 'section_2/COS_Section02_DeliverablesPacket.pdf', label: 'Deliverables Packet' }], buyUrl: 'https://buy.stripe.com/test_7sYfZa2IZ8uv48OcFNbsc01', price: '$285' },
-  { id: 'section_3', num: '03', title: 'Pricing, Revenue & Financial Systems', pages: '390', desc: 'Fully burdened labor rate, overhead allocation, membership programs, collections.', files: [{ path: 'section_3/COS_Section03_MainVault.pdf', label: 'Main Vault PDF' }, { path: 'section_3/COS_Section03_DeliverablesPacket.pdf', label: 'Deliverables Packet' }], spreadsheets: [{ path: 'section_3/spreadsheets/COS_S03_D-3.1-03_FullyBurdenedLaborRate.xlsx', label: 'Labor Rate Calculator' }], buyUrl: 'https://buy.stripe.com/test_dRmaEQ2IZcKL20G9tBbsc02', price: '$210' },
-  { id: 'section_4', num: '04', title: 'People, Growth & Scaling Systems', pages: '217', desc: 'Hiring math, structured onboarding, retention systems, financial readiness.', files: [{ path: 'section_4/COS_Section04_MainVault.pdf', label: 'Main Vault PDF' }, { path: 'section_4/COS_Section04_DeliverablesPacket.pdf', label: 'Deliverables Packet' }], buyUrl: 'https://buy.stripe.com/test_8x2aEQ83j9yzgVAbBJbsc03', price: '$185' }
+  { id: 'section_1', num: '01', title: 'Sales & Lead Management', pages: '664', desc: 'CSR scripts, objection handling, booking protocols, reactivation campaigns, pipeline KPIs.',
+    files: [
+      { path: 'section_1/COS_Section01_MainVault.pdf', label: 'Main Vault PDF' },
+      { path: 'section_1/COS_Section01_DeliverablesPacket.pdf', label: 'Deliverables Packet' }
+    ],
+    spreadsheets: [
+      { path: 'section_1/spreadsheets/COS_S01_D-1.1-05_CustomerLifetimeValue.xlsx', label: 'Customer Lifetime Value Calculator' },
+      { path: 'section_1/spreadsheets/COS_S01_D-1.1-11_WeeklySalesDashboard.xlsx', label: 'Weekly Sales Dashboard' },
+      { path: 'section_1/spreadsheets/COS_S01_D-1.3-16_PipelineKPIs.xlsx', label: 'Pipeline KPI Tracker' },
+      { path: 'section_1/spreadsheets/COS_S01_D-1.6-01_CustomerMasterList.xlsx', label: 'Customer Master List' },
+      { path: 'section_1/spreadsheets/COS_S01_D-1.6-15_UnsoldQuoteTracker.xlsx', label: 'Unsold Quote Tracker' },
+      { path: 'section_1/spreadsheets/COS_S01_D-1.6-16_ReactivationTracker.xlsx', label: 'Reactivation Tracker' }
+    ],
+    buyUrl: 'https://buy.stripe.com/test_28E5kw6Zf5ijcFk6hpbsc00', price: '$235' },
+  { id: 'section_2', num: '02', title: 'Field Operations & Service Delivery', pages: '1,036', desc: 'Zone scheduling, dispatch workflows, technician performance, after-hours protocols.',
+    files: [
+      { path: 'section_2/COS_Section02_MainVault.pdf', label: 'Main Vault PDF' },
+      { path: 'section_2/COS_Section02_DeliverablesPacket.pdf', label: 'Deliverables Packet' }
+    ],
+    spreadsheets: [
+      { path: 'section_2/spreadsheets/COS_S02_D-2.1-05_ZoneHealthTracker.xlsx', label: 'Zone Health Tracker' },
+      { path: 'section_2/spreadsheets/COS_S02_D-2.1-20_JobLifecycleTracker.xlsx', label: 'Job Lifecycle Tracker' },
+      { path: 'section_2/spreadsheets/COS_S02_D-2.1-27_TechPerformanceDashboard.xlsx', label: 'Tech Performance Dashboard' },
+      { path: 'section_2/spreadsheets/COS_S02_D-2.2-30_DispatchQualityKPI.xlsx', label: 'Dispatch Quality KPI' },
+      { path: 'section_2/spreadsheets/COS_S02_D-2.3-50_FieldWorkflowKPI.xlsx', label: 'Field Workflow KPI' },
+      { path: 'section_2/spreadsheets/COS_S02_D-2.6-17_EmergencyCallLog.xlsx', label: 'Emergency Call Log' }
+    ],
+    buyUrl: 'https://buy.stripe.com/test_7sYfZa2IZ8uv48OcFNbsc01', price: '$285' },
+  { id: 'section_3', num: '03', title: 'Pricing, Revenue & Financial Systems', pages: '390', desc: 'Fully burdened labor rate, overhead allocation, membership programs, collections.',
+    files: [
+      { path: 'section_3/COS_Section03_MainVault.pdf', label: 'Main Vault PDF' },
+      { path: 'section_3/COS_Section03_DeliverablesPacket.pdf', label: 'Deliverables Packet' }
+    ],
+    spreadsheets: [
+      { path: 'section_3/spreadsheets/COS_S03_D-3.1-03_FullyBurdenedLaborRate.xlsx', label: 'Fully Burdened Labor Rate Calculator' },
+      { path: 'section_3/spreadsheets/COS_S03_D-3.1-04_OverheadAllocationWorksheet.xlsx', label: 'Overhead Allocation Worksheet' },
+      { path: 'section_3/spreadsheets/COS_S03_D-3.2-02_MemberProfitabilityModel.xlsx', label: 'Member Profitability Model' },
+      { path: 'section_3/spreadsheets/COS_S03_D-3.2-16_MembershipHealthDashboard.xlsx', label: 'Membership Health Dashboard' },
+      { path: 'section_3/spreadsheets/COS_S03_D-3.2-17_12MonthGrowthProjection.xlsx', label: '12-Month Growth Projection' },
+      { path: 'section_3/spreadsheets/COS_S03_D-3.3-15_CollectionsDashboard.xlsx', label: 'Collections Dashboard' },
+      { path: 'section_3/spreadsheets/COS_S03_D-3.3-16_CashFlowHealthMetrics.xlsx', label: 'Cash Flow Health Metrics' }
+    ],
+    buyUrl: 'https://buy.stripe.com/test_dRmaEQ2IZcKL20G9tBbsc02', price: '$210' },
+  { id: 'section_4', num: '04', title: 'People, Growth & Scaling Systems', pages: '217', desc: 'Hiring math, structured onboarding, retention systems, financial readiness.',
+    files: [
+      { path: 'section_4/COS_Section04_MainVault.pdf', label: 'Main Vault PDF' },
+      { path: 'section_4/COS_Section04_DeliverablesPacket.pdf', label: 'Deliverables Packet' }
+    ],
+    spreadsheets: [
+      { path: 'section_4/spreadsheets/COS_S04_D-4.1-02_GrossMarginCalculator.xlsx', label: 'Gross Margin Calculator' },
+      { path: 'section_4/spreadsheets/COS_S04_D-4.1-03_CashReserveCalculator.xlsx', label: 'Cash Reserve Calculator' },
+      { path: 'section_4/spreadsheets/COS_S04_D-4.1-07_TrueCostNewHire.xlsx', label: 'True Cost of a New Hire' },
+      { path: 'section_4/spreadsheets/COS_S04_D-4.4-07_CompVsReplacementAnalysis.xlsx', label: 'Comp vs Replacement Analysis' }
+    ],
+    buyUrl: 'https://buy.stripe.com/test_8x2aEQ83j9yzgVAbBJbsc03', price: '$185' }
 ];
 
 const loginScreen  = document.getElementById('login-screen');
