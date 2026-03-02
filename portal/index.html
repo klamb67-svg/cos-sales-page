@@ -14,7 +14,7 @@
   :root {
     --navy: #1B2A4A; --navy-deep: #0D1B30; --navy-mid: #243558;
     --gold: #C8922A; --gold-light: #E0A83A;
-    --white: #FFFFFF; --off-white: #F8F6F0; --light: #F4F6F9; --mid: #E2E8F0;
+    --white: #FFFFFF; --mid: #E2E8F0;
     --text: #2D3748; --muted: #718096; --green: #2D9D5C; --red: #C53030;
     --serif: 'Playfair Display', Georgia, serif;
     --sans: 'Inter', system-ui, sans-serif;
@@ -31,13 +31,18 @@
   .btn-logout { background: transparent; border: 1px solid rgba(255,255,255,0.2); color: rgba(255,255,255,0.6); font-size: 0.78rem; font-weight: 600; padding: 6px 14px; border-radius: 4px; cursor: pointer; transition: all 0.2s; font-family: var(--sans); }
   .btn-logout:hover { border-color: var(--gold); color: var(--gold); }
   .btn-logout:disabled { opacity: 0.5; cursor: not-allowed; }
-
   .grid-bg { position: fixed; inset: 0; z-index: 0; background-image: linear-gradient(rgba(200,146,42,0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(200,146,42,0.04) 1px, transparent 1px); background-size: 44px 44px; pointer-events: none; }
   .gold-bar { height: 3px; background: linear-gradient(90deg, transparent, var(--gold), var(--gold-light), var(--gold), transparent); }
-
   .portal-container { position: relative; z-index: 1; max-width: 900px; margin: 0 auto; padding: 48px 24px 80px; }
 
-  /* Login */
+  /* DEBUG PANEL */
+  .debug-panel { position: relative; z-index: 10; background: #1a1a2e; border-bottom: 2px solid #f59e0b; padding: 12px 24px; font-family: monospace; font-size: 0.75rem; color: #fbbf24; }
+  .debug-panel strong { color: #fff; }
+  .debug-panel .debug-row { margin-bottom: 4px; }
+  .debug-panel .debug-ok { color: #34d399; }
+  .debug-panel .debug-err { color: #f87171; }
+  .debug-dismiss { float: right; background: transparent; border: 1px solid #f59e0b; color: #f59e0b; padding: 2px 8px; border-radius: 3px; cursor: pointer; font-size: 0.7rem; font-family: var(--sans); }
+
   .login-screen { display: flex; align-items: center; justify-content: center; min-height: calc(100vh - 67px); }
   .login-card { background: var(--white); border-radius: 16px; padding: 48px 40px; width: 100%; max-width: 420px; box-shadow: 0 24px 80px rgba(0,0,0,0.4); text-align: center; }
   .login-logo h2 { font-family: var(--serif); font-size: 1.5rem; color: var(--navy); }
@@ -57,7 +62,6 @@
   .login-footer { margin-top: 24px; font-size: 0.78rem; color: var(--muted); }
   .login-footer a { color: var(--gold); text-decoration: none; }
 
-  /* Dashboard */
   .dashboard { display: none; }
   .dashboard.active { display: block; }
   .dash-header { margin-bottom: 40px; }
@@ -76,7 +80,6 @@
   .dash-card-body { padding: 20px 24px; }
   .dash-card-desc { font-size: 0.85rem; color: var(--muted); margin-bottom: 16px; line-height: 1.6; }
   .dash-files { display: flex; flex-direction: column; gap: 10px; }
-
   .file-row { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
   .file-label { font-size: 0.82rem; font-weight: 600; color: var(--text); flex: 1; min-width: 120px; }
   .btn-view { display: inline-flex; align-items: center; gap: 6px; padding: 9px 14px; background: var(--navy-deep); color: var(--white); font-family: var(--sans); font-size: 0.8rem; font-weight: 600; border: none; border-radius: 6px; cursor: pointer; transition: all 0.2s; white-space: nowrap; flex-shrink: 0; }
@@ -96,31 +99,26 @@
   .status-badge.owned { background: rgba(45,157,92,0.15); color: var(--green); }
   .status-badge.locked { background: rgba(113,128,150,0.15); color: var(--muted); }
 
-  /* PDF Modal */
   .pdf-modal-overlay { display: none; position: fixed; inset: 0; z-index: 9000; background: rgba(8,14,26,0.92); backdrop-filter: blur(8px); align-items: center; justify-content: center; padding: 24px; }
   .pdf-modal-overlay.active { display: flex; }
   .pdf-modal { background: var(--white); border-radius: 12px; overflow: hidden; width: 100%; max-width: 960px; height: 85vh; display: flex; flex-direction: column; box-shadow: 0 40px 120px rgba(0,0,0,0.6); }
   .pdf-modal-header { background: var(--navy); padding: 14px 20px; display: flex; align-items: center; justify-content: space-between; flex-shrink: 0; }
   .pdf-modal-title { font-family: var(--serif); font-size: 1rem; color: var(--white); }
-  .pdf-modal-title span { color: var(--gold); }
   .btn-close-modal { background: transparent; border: 1px solid rgba(255,255,255,0.2); color: rgba(255,255,255,0.7); font-size: 0.8rem; font-weight: 600; padding: 6px 14px; border-radius: 4px; cursor: pointer; transition: all 0.2s; font-family: var(--sans); }
   .btn-close-modal:hover { border-color: var(--gold); color: var(--gold); }
   #adobe-pdf-viewer { flex: 1; width: 100%; }
 
   .spinner { width: 13px; height: 13px; border: 2px solid transparent; border-top-color: currentColor; border-radius: 50%; animation: spin 0.7s linear infinite; display: inline-block; flex-shrink: 0; }
   @keyframes spin { to { transform: rotate(360deg); } }
-
   .toast { position: fixed; bottom: 24px; right: 24px; z-index: 9999; background: var(--navy); color: var(--white); padding: 14px 20px; border-radius: 8px; font-size: 0.85rem; font-weight: 500; box-shadow: 0 8px 32px rgba(0,0,0,0.3); transform: translateY(100px); opacity: 0; transition: all 0.3s ease; }
   .toast.show { transform: translateY(0); opacity: 1; }
   .toast.error { background: var(--red); }
   .toast.success { background: var(--green); }
-
   @media (max-width: 560px) {
     .login-card { padding: 36px 24px; }
     .dash-grid { grid-template-columns: 1fr; }
     .dash-welcome { font-size: 1.4rem; }
     .portal-container { padding: 32px 16px 60px; }
-    .pdf-modal { height: 92vh; border-radius: 8px; }
   }
 </style>
 </head>
@@ -137,9 +135,21 @@
   </div>
 </nav>
 <div class="gold-bar"></div>
+
+<!-- DEBUG PANEL — send a screenshot of this to Rook -->
+<div class="debug-panel" id="debug-panel">
+  <button class="debug-dismiss" onclick="document.getElementById('debug-panel').style.display='none'">Dismiss</button>
+  <div class="debug-row"><strong>🔍 DEBUG MODE — Screenshot this and send to Rook</strong></div>
+  <div class="debug-row" id="dbg-uid">auth.uid: checking...</div>
+  <div class="debug-row" id="dbg-token">access_token: checking...</div>
+  <div class="debug-row" id="dbg-http">REST status: checking...</div>
+  <div class="debug-row" id="dbg-raw">raw response: checking...</div>
+  <div class="debug-row" id="dbg-ids">parsed section_ids: checking...</div>
+  <div class="debug-row" id="dbg-match">JS section ids: section_1, section_2, section_3, section_4</div>
+</div>
+
 <div class="grid-bg"></div>
 
-<!-- LOGIN -->
 <div class="login-screen" id="login-screen">
   <div class="login-card">
     <div class="login-logo"><h2>COS</h2><p>Member Portal</p></div>
@@ -155,7 +165,6 @@
   </div>
 </div>
 
-<!-- DASHBOARD -->
 <div class="dashboard" id="dashboard">
   <div class="portal-container">
     <div class="dash-header">
@@ -166,7 +175,6 @@
   </div>
 </div>
 
-<!-- PDF Viewer Modal -->
 <div class="pdf-modal-overlay" id="pdf-modal-overlay">
   <div class="pdf-modal">
     <div class="pdf-modal-header">
@@ -180,58 +188,20 @@
 <div class="toast" id="toast"></div>
 
 <script>
-// ── Config ──────────────────────────────────────────────────────
-const SUPABASE_URL     = 'https://jgazdkmigiccehgyqfrq.supabase.co';
+const SUPABASE_URL      = 'https://jgazdkmigiccehgyqfrq.supabase.co';
 const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImpnYXpka21pZ2ljY2VoZ3lxZnJxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzIzMTA5MTAsImV4cCI6MjA4Nzg4NjkxMH0.x0x5kxrxSOKDgFLc-d6J7K3AG-qraaNabaVG1hMZym0';
-const PORTAL_URL       = 'https://mmdocuments.com/portal/';
-const ADOBE_API_KEY    = 'd28175085c474c38a3e939430cce491f';
+const PORTAL_URL        = 'https://mmdocuments.com/portal/';
+const ADOBE_API_KEY     = 'd28175085c474c38a3e939430cce491f';
 
 const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-// ── Sections ────────────────────────────────────────────────────
 const SECTIONS = [
-  {
-    id: 'section_1', num: '01', title: 'Sales & Lead Management', pages: '544',
-    desc: 'CSR scripts, objection handling, booking protocols, reactivation campaigns, pipeline KPIs.',
-    files: [
-      { path: 'section_1/COS_Section01_MainVault.pdf', label: 'Main Vault PDF' },
-      { path: 'section_1/COS_Section01_DeliverablesPacket.pdf', label: 'Deliverables Packet' }
-    ],
-    buyUrl: 'https://buy.stripe.com/test_28E5kw6Zf5ijcFk6hpbsc00', price: '$235'
-  },
-  {
-    id: 'section_2', num: '02', title: 'Field Operations & Service Delivery', pages: '693',
-    desc: 'Zone scheduling, dispatch workflows, technician performance, after-hours protocols.',
-    files: [
-      { path: 'section_2/COS_Section02_MainVault.pdf', label: 'Main Vault PDF' },
-      { path: 'section_2/COS_Section02_DeliverablesPacket.pdf', label: 'Deliverables Packet' }
-    ],
-    buyUrl: 'https://buy.stripe.com/test_7sYfZa2IZ8uv48OcFNbsc01', price: '$285'
-  },
-  {
-    id: 'section_3', num: '03', title: 'Pricing, Revenue & Financial Systems', pages: '258',
-    desc: 'Fully burdened labor rate, overhead allocation, membership programs, collections.',
-    files: [
-      { path: 'section_3/COS_Section03_MainVault.pdf', label: 'Main Vault PDF' },
-      { path: 'section_3/COS_Section03_DeliverablesPacket.pdf', label: 'Deliverables Packet' }
-    ],
-    spreadsheets: [
-      { path: 'section_3/spreadsheets/COS_S03_D-3.1-03_FullyBurdenedLaborRate.xlsx', label: 'Labor Rate Calculator' }
-    ],
-    buyUrl: 'https://buy.stripe.com/test_dRmaEQ2IZcKL20G9tBbsc02', price: '$210'
-  },
-  {
-    id: 'section_4', num: '04', title: 'People, Growth & Scaling Systems', pages: '119',
-    desc: 'Hiring math, structured onboarding, retention systems, financial readiness.',
-    files: [
-      { path: 'section_4/COS_Section04_MainVault.pdf', label: 'Main Vault PDF' },
-      { path: 'section_4/COS_Section04_DeliverablesPacket.pdf', label: 'Deliverables Packet' }
-    ],
-    buyUrl: 'https://buy.stripe.com/test_8x2aEQ83j9yzgVAbBJbsc03', price: '$185'
-  }
+  { id: 'section_1', num: '01', title: 'Sales & Lead Management', pages: '544', desc: 'CSR scripts, objection handling, booking protocols, reactivation campaigns, pipeline KPIs.', files: [{ path: 'section_1/COS_Section01_MainVault.pdf', label: 'Main Vault PDF' }, { path: 'section_1/COS_Section01_DeliverablesPacket.pdf', label: 'Deliverables Packet' }], buyUrl: 'https://buy.stripe.com/test_28E5kw6Zf5ijcFk6hpbsc00', price: '$235' },
+  { id: 'section_2', num: '02', title: 'Field Operations & Service Delivery', pages: '693', desc: 'Zone scheduling, dispatch workflows, technician performance, after-hours protocols.', files: [{ path: 'section_2/COS_Section02_MainVault.pdf', label: 'Main Vault PDF' }, { path: 'section_2/COS_Section02_DeliverablesPacket.pdf', label: 'Deliverables Packet' }], buyUrl: 'https://buy.stripe.com/test_7sYfZa2IZ8uv48OcFNbsc01', price: '$285' },
+  { id: 'section_3', num: '03', title: 'Pricing, Revenue & Financial Systems', pages: '258', desc: 'Fully burdened labor rate, overhead allocation, membership programs, collections.', files: [{ path: 'section_3/COS_Section03_MainVault.pdf', label: 'Main Vault PDF' }, { path: 'section_3/COS_Section03_DeliverablesPacket.pdf', label: 'Deliverables Packet' }], spreadsheets: [{ path: 'section_3/spreadsheets/COS_S03_D-3.1-03_FullyBurdenedLaborRate.xlsx', label: 'Labor Rate Calculator' }], buyUrl: 'https://buy.stripe.com/test_dRmaEQ2IZcKL20G9tBbsc02', price: '$210' },
+  { id: 'section_4', num: '04', title: 'People, Growth & Scaling Systems', pages: '119', desc: 'Hiring math, structured onboarding, retention systems, financial readiness.', files: [{ path: 'section_4/COS_Section04_MainVault.pdf', label: 'Main Vault PDF' }, { path: 'section_4/COS_Section04_DeliverablesPacket.pdf', label: 'Deliverables Packet' }], buyUrl: 'https://buy.stripe.com/test_8x2aEQ83j9yzgVAbBJbsc03', price: '$185' }
 ];
 
-// ── DOM ─────────────────────────────────────────────────────────
 const loginScreen  = document.getElementById('login-screen');
 const dashboard    = document.getElementById('dashboard');
 const dashGrid     = document.getElementById('dash-grid');
@@ -246,267 +216,160 @@ const toast        = document.getElementById('toast');
 const pdfOverlay   = document.getElementById('pdf-modal-overlay');
 const pdfTitle     = document.getElementById('pdf-modal-title');
 
-// ── Toast ────────────────────────────────────────────────────────
+// Debug helpers
+function dbg(id, msg, ok) {
+  const el = document.getElementById(id);
+  if (el) { el.textContent = el.textContent.split(':')[0] + ': ' + msg; el.className = 'debug-row ' + (ok === true ? 'debug-ok' : ok === false ? 'debug-err' : ''); }
+}
+
 function showToast(msg, type = '') {
-  toast.textContent = msg;
-  toast.className = 'toast ' + type;
+  toast.textContent = msg; toast.className = 'toast ' + type;
   setTimeout(() => toast.classList.add('show'), 10);
   setTimeout(() => toast.classList.remove('show'), 3500);
 }
 
-// ── Show/hide screens ────────────────────────────────────────────
 function showLogin() {
-  loginScreen.style.display = 'flex';
-  dashboard.classList.remove('active');
-  navRight.style.display = 'none';
-  btnLogout.textContent = 'Sign Out';
-  btnLogout.disabled = false;
+  loginScreen.style.display = 'flex'; dashboard.classList.remove('active');
+  navRight.style.display = 'none'; btnLogout.textContent = 'Sign Out'; btnLogout.disabled = false;
 }
 
 function showDashboard(email) {
-  loginScreen.style.display = 'none';
-  dashboard.classList.add('active');
-  navRight.style.display = 'flex';
-  navEmail.textContent = email;
+  loginScreen.style.display = 'none'; dashboard.classList.add('active');
+  navRight.style.display = 'flex'; navEmail.textContent = email;
 }
 
-// ── Magic link login ─────────────────────────────────────────────
 loginForm.addEventListener('submit', async (e) => {
   e.preventDefault();
-  const email = loginEmail.value.trim();
-  if (!email) return;
-
-  btnSendLink.disabled = true;
-  btnSendLink.innerHTML = '<span class="spinner"></span> Sending...';
+  const email = loginEmail.value.trim(); if (!email) return;
+  btnSendLink.disabled = true; btnSendLink.innerHTML = '<span class="spinner"></span> Sending...';
   loginMessage.className = 'login-message';
-
-  const { error } = await sb.auth.signInWithOtp({
-    email,
-    options: { emailRedirectTo: PORTAL_URL }
-  });
-
-  if (error) {
-    loginMessage.className = 'login-message error';
-    loginMessage.textContent = error.message;
-  } else {
-    loginMessage.className = 'login-message success';
-    loginMessage.innerHTML = '✓ Magic link sent! Check your email and click the link to sign in.<br><small style="opacity:0.7;">It may take a minute. Check spam if you don\'t see it.</small>';
-  }
-
-  btnSendLink.disabled = false;
-  btnSendLink.textContent = 'Send Magic Link';
+  const { error } = await sb.auth.signInWithOtp({ email, options: { emailRedirectTo: PORTAL_URL } });
+  if (error) { loginMessage.className = 'login-message error'; loginMessage.textContent = error.message; }
+  else { loginMessage.className = 'login-message success'; loginMessage.innerHTML = '✓ Magic link sent! Check your email.<br><small style="opacity:0.7;">Check spam if you don\'t see it.</small>'; }
+  btnSendLink.disabled = false; btnSendLink.textContent = 'Send Magic Link';
 });
 
-// ── FIX: Sign out — try/catch + timeout so it never hangs ───────
 btnLogout.addEventListener('click', async () => {
-  btnLogout.textContent = 'Signing out...';
-  btnLogout.disabled = true;
-
-  try {
-    // Race: sign out OR 4-second timeout — whichever wins
-    await Promise.race([
-      sb.auth.signOut(),
-      new Promise(resolve => setTimeout(resolve, 4000))
-    ]);
-  } catch (err) {
-    // Network failure is OK — local session is still cleared
-  }
-
-  // Show login regardless of network outcome
+  btnLogout.textContent = 'Signing out...'; btnLogout.disabled = true;
+  try { await Promise.race([sb.auth.signOut(), new Promise(r => setTimeout(r, 4000))]); } catch (e) {}
   showLogin();
 });
 
-// ── FIX: getUserAccess — direct REST call, bypasses JS client ───
-// Root cause: Supabase JS client session propagation can be
-// unreliable in certain browser environments (race condition in
-// the internal auth state). Direct REST call with explicit
-// Authorization header is 100% deterministic.
-async function getUserAccess(accessToken) {
+// ── getUserAccess with full debug output ─────────────────────────
+async function getUserAccess(accessToken, userId) {
+  dbg('dbg-uid', userId, null);
+  dbg('dbg-token', accessToken ? accessToken.substring(0, 40) + '...' : 'MISSING', !!accessToken);
+
   try {
-    const response = await fetch(
-      `${SUPABASE_URL}/rest/v1/section_access?select=section_id`,
-      {
-        headers: {
-          'apikey': SUPABASE_ANON_KEY,
-          'Authorization': `Bearer ${accessToken}`,
-          'Content-Type': 'application/json'
-        }
+    const url = `${SUPABASE_URL}/rest/v1/section_access?select=section_id`;
+    const response = await fetch(url, {
+      headers: {
+        'apikey': SUPABASE_ANON_KEY,
+        'Authorization': 'Bearer ' + accessToken,
+        'Accept': 'application/json'
       }
-    );
+    });
 
-    if (!response.ok) {
-      console.error('section_access fetch failed:', response.status, await response.text());
-      return [];
-    }
+    const httpStatus = response.status;
+    dbg('dbg-http', 'HTTP ' + httpStatus + (httpStatus === 200 ? ' OK' : ' ERROR'), httpStatus === 200);
 
-    const data = await response.json();
-    return Array.isArray(data) ? data.map(row => row.section_id) : [];
+    const text = await response.text();
+    dbg('dbg-raw', text.substring(0, 200), httpStatus === 200 && text !== '[]');
+
+    if (!response.ok) { return []; }
+
+    let data;
+    try { data = JSON.parse(text); } catch (e) { dbg('dbg-ids', 'JSON parse error: ' + e.message, false); return []; }
+
+    const ids = Array.isArray(data) ? data.map(row => String(row.section_id).trim()) : [];
+    dbg('dbg-ids', ids.length > 0 ? JSON.stringify(ids) : 'EMPTY ARRAY — 0 rows returned', ids.length > 0);
+    return ids;
 
   } catch (err) {
-    console.error('getUserAccess error:', err.message);
+    dbg('dbg-http', 'FETCH ERROR: ' + err.message, false);
     return [];
   }
 }
 
-// ── getSignedUrl via Edge Function ──────────────────────────────
 async function getSignedUrl(filePath, accessToken) {
   const response = await fetch(`${SUPABASE_URL}/functions/v1/get-download-url`, {
     method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      'Authorization': `Bearer ${accessToken}`
-    },
+    headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + accessToken },
     body: JSON.stringify({ file_path: filePath })
   });
-
   const result = await response.json();
   if (!response.ok) throw new Error(result.error || 'Failed to get document URL');
   return result.url;
 }
 
-// ── Download ─────────────────────────────────────────────────────
 async function downloadFile(filePath, btn) {
-  btn.classList.add('loading');
-  const orig = btn.innerHTML;
+  btn.classList.add('loading'); const orig = btn.innerHTML;
   btn.innerHTML = '<span class="spinner"></span> Getting link...';
-
   try {
     const { data: { session } } = await sb.auth.getSession();
     if (!session) { showLogin(); return; }
     const url = await getSignedUrl(filePath, session.access_token);
-    window.open(url, '_blank');
-    showToast('Download started!', 'success');
-  } catch (err) {
-    showToast(err.message || 'Download failed. Try again.', 'error');
-  } finally {
-    btn.classList.remove('loading');
-    btn.innerHTML = orig;
-  }
+    window.open(url, '_blank'); showToast('Download started!', 'success');
+  } catch (err) { showToast(err.message || 'Download failed.', 'error'); }
+  finally { btn.classList.remove('loading'); btn.innerHTML = orig; }
 }
 
-// ── View PDF in Adobe Embed ──────────────────────────────────────
 async function viewPDF(filePath, fileName, btn) {
-  btn.classList.add('loading');
-  const orig = btn.innerHTML;
+  btn.classList.add('loading'); const orig = btn.innerHTML;
   btn.innerHTML = '<span class="spinner"></span> Loading...';
-
   try {
     const { data: { session } } = await sb.auth.getSession();
     if (!session) { showLogin(); return; }
     const url = await getSignedUrl(filePath, session.access_token);
-
-    pdfTitle.innerHTML = `<span>${fileName}</span>`;
+    pdfTitle.innerHTML = '<span>' + fileName + '</span>';
     pdfOverlay.classList.add('active');
-
-    const viewerEl = document.getElementById('adobe-pdf-viewer');
-    viewerEl.innerHTML = '';
-
-    const launchViewer = () => {
+    document.getElementById('adobe-pdf-viewer').innerHTML = '';
+    const launch = () => {
       new AdobeDC.View({ clientId: ADOBE_API_KEY, divId: 'adobe-pdf-viewer' })
-        .previewFile(
-          { content: { location: { url } }, metaData: { fileName } },
-          { embedMode: 'SIZED_CONTAINER', showDownloadPDF: true, showPrintPDF: true, showLeftHandPanel: true }
-        );
+        .previewFile({ content: { location: { url } }, metaData: { fileName } }, { embedMode: 'SIZED_CONTAINER', showDownloadPDF: true, showPrintPDF: true, showLeftHandPanel: true });
     };
-
-    if (window.AdobeDC) {
-      launchViewer();
-    } else {
-      document.addEventListener('adobe_dc_view_sdk.ready', launchViewer, { once: true });
-    }
-
-  } catch (err) {
-    showToast(err.message || 'Could not load document.', 'error');
-  } finally {
-    btn.classList.remove('loading');
-    btn.innerHTML = orig;
-  }
+    if (window.AdobeDC) launch();
+    else document.addEventListener('adobe_dc_view_sdk.ready', launch, { once: true });
+  } catch (err) { showToast(err.message || 'Could not load document.', 'error'); }
+  finally { btn.classList.remove('loading'); btn.innerHTML = orig; }
 }
 
 function closePDFViewer() {
   pdfOverlay.classList.remove('active');
   document.getElementById('adobe-pdf-viewer').innerHTML = '';
 }
-
 pdfOverlay.addEventListener('click', e => { if (e.target === pdfOverlay) closePDFViewer(); });
 document.addEventListener('keydown', e => { if (e.key === 'Escape') closePDFViewer(); });
 
-// ── Render cards ─────────────────────────────────────────────────
 function renderDashboard(ownedSections) {
   dashGrid.innerHTML = '';
-
   SECTIONS.forEach(section => {
     const owned = ownedSections.includes(section.id);
     const card = document.createElement('div');
-    card.className = `dash-card${owned ? '' : ' locked'}`;
+    card.className = 'dash-card' + (owned ? '' : ' locked');
 
-    const header = `
-      <div class="dash-card-header">
-        <div>
-          <div class="dash-card-section">Section ${section.num}
-            <span class="status-badge ${owned ? 'owned' : 'locked'}">${owned ? 'Owned' : 'Not Purchased'}</span>
-          </div>
-          <div class="dash-card-title">${section.title}</div>
-        </div>
-        <div>
-          <div class="dash-card-pages-num">${section.pages}</div>
-          <div class="dash-card-pages-label">pages</div>
-        </div>
-      </div>`;
+    const header = `<div class="dash-card-header"><div><div class="dash-card-section">Section ${section.num} <span class="status-badge ${owned ? 'owned' : 'locked'}">${owned ? 'Owned' : 'Not Purchased'}</span></div><div class="dash-card-title">${section.title}</div></div><div><div class="dash-card-pages-num">${section.pages}</div><div class="dash-card-pages-label">pages</div></div></div>`;
 
     if (owned) {
-      const pdfRows = section.files.map(f => `
-        <div class="file-row">
-          <span class="file-label">${f.label}</span>
-          <button class="btn-view" onclick="viewPDF('${f.path}', '${f.label} — Section ${section.num}', this)">
-            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
-            View
-          </button>
-          <button class="btn-download" onclick="downloadFile('${f.path}', this)">
-            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-            Download
-          </button>
-        </div>`).join('');
-
-      const xlsxRows = (section.spreadsheets || []).map(f => `
-        <div class="file-row">
-          <span class="file-label">${f.label}</span>
-          <button class="btn-download" onclick="downloadFile('${f.path}', this)">
-            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-            Download
-          </button>
-        </div>`).join('');
-
-      card.innerHTML = `${header}<div class="dash-card-body"><div class="dash-card-desc">${section.desc}</div><div class="dash-files">${pdfRows}${xlsxRows}</div></div>`;
+      const pdfRows = section.files.map(f => `<div class="file-row"><span class="file-label">${f.label}</span><button class="btn-view" onclick="viewPDF('${f.path}','${f.label} — Section ${section.num}',this)"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg> View</button><button class="btn-download" onclick="downloadFile('${f.path}',this)"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg> Download</button></div>`).join('');
+      const xlsxRows = (section.spreadsheets || []).map(f => `<div class="file-row"><span class="file-label">${f.label}</span><button class="btn-download" onclick="downloadFile('${f.path}',this)"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg> Download</button></div>`).join('');
+      card.innerHTML = header + `<div class="dash-card-body"><div class="dash-card-desc">${section.desc}</div><div class="dash-files">${pdfRows}${xlsxRows}</div></div>`;
     } else {
-      card.innerHTML = `${header}<div class="dash-card-body"><div class="dash-card-desc">${section.desc}</div><a href="${section.buyUrl}" class="btn-buy">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
-        Purchase Section ${section.num} — ${section.price}
-      </a></div>`;
+      card.innerHTML = header + `<div class="dash-card-body"><div class="dash-card-desc">${section.desc}</div><a href="${section.buyUrl}" class="btn-buy"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg> Purchase Section ${section.num} — ${section.price}</a></div>`;
     }
-
     dashGrid.appendChild(card);
   });
 }
 
-// ── FIX: Init — dual-track auth detection ────────────────────────
-//
-// THE BUG: onAuthStateChange(INITIAL_SESSION) can fire before the
-// listener is registered (race condition in Supabase JS v2 startup).
-// When that happens, the page stays blank forever.
-//
-// THE FIX: Dual-track. Both paths run. A flag (authHandled) ensures
-// only the first one that arrives actually renders the UI.
-//
+// ── Dual-track init ──────────────────────────────────────────────
 let authHandled = false;
 
 async function handleAuthSession(session) {
-  if (authHandled) return;  // Only the first caller wins
+  if (authHandled) return;
   authHandled = true;
-
   if (session) {
     showDashboard(session.user.email);
-    const owned = await getUserAccess(session.access_token);
+    const owned = await getUserAccess(session.access_token, session.user.id);
     renderDashboard(owned);
   } else {
     showLogin();
@@ -514,25 +377,15 @@ async function handleAuthSession(session) {
 }
 
 async function init() {
-  // Track 1: onAuthStateChange (catches SIGNED_IN, INITIAL_SESSION, TOKEN_REFRESHED)
   sb.auth.onAuthStateChange(async (event, session) => {
-    if (event === 'SIGNED_OUT') {
-      authHandled = false;  // Allow re-auth after sign out
-      showLogin();
-      return;
-    }
+    if (event === 'SIGNED_OUT') { authHandled = false; showLogin(); return; }
     if (event === 'TOKEN_REFRESHED' && session) {
-      // Token refreshed — re-render with new token (don't use authHandled flag)
-      const owned = await getUserAccess(session.access_token);
-      renderDashboard(owned);
-      return;
+      const owned = await getUserAccess(session.access_token, session.user.id);
+      renderDashboard(owned); return;
     }
-    // SIGNED_IN or INITIAL_SESSION
     await handleAuthSession(session);
   });
 
-  // Track 2: Direct getSession() — fallback if INITIAL_SESSION fires before listener
-  // Runs immediately, races against Track 1.
   const { data: { session } } = await sb.auth.getSession();
   await handleAuthSession(session);
 }
