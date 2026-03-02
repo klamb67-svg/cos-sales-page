@@ -294,7 +294,7 @@ async function getUserAccess(accessToken, userId) {
 async function getSignedUrl(filePath, accessToken) {
   const response = await fetch(`${SUPABASE_URL}/functions/v1/get-download-url`, {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + accessToken },
+    headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + accessToken, 'apikey': SUPABASE_ANON_KEY },
     body: JSON.stringify({ file_path: filePath })
   });
   const result = await response.json();
