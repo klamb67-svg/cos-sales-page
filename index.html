@@ -150,7 +150,7 @@
   .value-intro { text-align: center; margin-bottom: 64px; }
   .value-intro h2 { font-size: clamp(1.8rem, 3.5vw, 2.8rem); color: var(--navy); margin-bottom: 16px; }
   .section-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(460px, 1fr)); gap: 24px; }
-  .section-card { background: var(--white); border-radius: 12px; overflow: hidden; box-shadow: 0 2px 16px rgba(0,0,0,0.06); transition: transform 0.25s, box-shadow 0.25s; border: 1px solid var(--mid); }
+  .section-card { background: var(--white); border-radius: 12px; overflow: hidden; box-shadow: 0 2px 16px rgba(0,0,0,0.06); transition: transform 0.25s, box-shadow 0.25s; border: 1px solid var(--mid); display: flex; flex-direction: column; }
   .section-card:hover { transform: translateY(-4px); box-shadow: 0 12px 40px rgba(0,0,0,0.1); }
   .section-card-header { background: var(--navy); padding: 24px 28px 20px; display: flex; justify-content: space-between; align-items: flex-start; }
   .section-card-num { font-size: 0.65rem; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; color: var(--gold); margin-bottom: 6px; }
@@ -158,7 +158,7 @@
   .section-card-pages { text-align: right; }
   .section-card-pages-num { font-family: var(--serif); font-size: 2rem; font-weight: 900; color: var(--gold); line-height: 1; }
   .section-card-pages-label { font-size: 0.6rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(255,255,255,0.4); }
-  .section-card-body { padding: 24px 28px; }
+  .section-card-body { padding: 24px 28px; flex: 1; }
   .section-card-desc { font-size: 0.88rem; color: var(--muted); line-height: 1.65; margin-bottom: 20px; }
   .chapter-list { list-style: none; display: flex; flex-direction: column; gap: 8px; }
   .chapter-list li { display: flex; justify-content: space-between; align-items: center; font-size: 0.82rem; padding: 6px 0; border-bottom: 1px solid var(--light); }
