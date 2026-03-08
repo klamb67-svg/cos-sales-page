@@ -95,12 +95,29 @@
 
   .pdf-modal-overlay { display: none; position: fixed; inset: 0; z-index: 9000; background: rgba(8,14,26,0.92); backdrop-filter: blur(8px); align-items: center; justify-content: center; padding: 24px; }
   .pdf-modal-overlay.active { display: flex; }
-  .pdf-modal { background: var(--white); border-radius: 12px; overflow: hidden; width: 100%; max-width: 960px; height: 85vh; display: flex; flex-direction: column; box-shadow: 0 40px 120px rgba(0,0,0,0.6); }
+  .pdf-modal { background: var(--white); border-radius: 12px; overflow: hidden; width: 100%; max-width: 960px; height: 85vh; max-height: 85vh; display: flex; flex-direction: column; box-shadow: 0 40px 120px rgba(0,0,0,0.6); }
+  #adobe-pdf-viewer { flex: 1; width: 100%; overflow-y: auto; }
+  @media (max-width: 768px) {
+    .pdf-modal { height: 90vh; max-height: 90vh; }
+    /* Mobile card header: stack title section + page count */
+    .dash-card-header { flex-wrap: wrap; align-items: stretch; }
+    .dash-card-header > div:first-child { flex: 1 100%; margin-bottom: 12px; }
+    .dash-card-header > div:last-child { align-self: flex-start; }
+    /* Mobile file rows: stack buttons */
+    .file-row { gap: 12px; flex-wrap: wrap; }
+    .btn-view, .btn-download { flex: 1 1 48%; }
+  }
+  @media (max-width: 560px) {
+    .pdf-modal { height: 92vh; max-height: 92vh; border-radius: 0; }
+    .pdf-modal-overlay { padding: 0; }
+    .dash-card-header { padding: 16px; }
+    .file-row { flex-direction: column; }
+    .btn-view, .btn-download { flex: 1 100%; }
+  }
   .pdf-modal-header { background: var(--navy); padding: 14px 20px; display: flex; align-items: center; justify-content: space-between; flex-shrink: 0; }
   .pdf-modal-title { font-family: var(--serif); font-size: 1rem; color: var(--white); }
   .btn-close-modal { background: transparent; border: 1px solid rgba(255,255,255,0.2); color: rgba(255,255,255,0.7); font-size: 0.8rem; font-weight: 600; padding: 6px 14px; border-radius: 4px; cursor: pointer; transition: all 0.2s; font-family: var(--sans); }
   .btn-close-modal:hover { border-color: var(--gold); color: var(--gold); }
-  #adobe-pdf-viewer { flex: 1; width: 100%; }
 
   .spinner { width: 13px; height: 13px; border: 2px solid transparent; border-top-color: currentColor; border-radius: 50%; animation: spin 0.7s linear infinite; display: inline-block; flex-shrink: 0; }
   @keyframes spin { to { transform: rotate(360deg); } }
@@ -113,6 +130,8 @@
     .dash-grid { grid-template-columns: 1fr; }
     .dash-welcome { font-size: 1.4rem; }
     .portal-container { padding: 32px 16px 60px; }
+    .pdf-modal { height: 92vh; max-height: 92vh; border-radius: 0; }
+    .pdf-modal-overlay { padding: 0; }
   }
 </style>
 </head>
